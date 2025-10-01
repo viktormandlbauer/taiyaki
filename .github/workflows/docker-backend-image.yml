@@ -1,18 +1,66 @@
-name: Docker Image CI
+name: Taiyaki Backend — Build & Run (self-hosted)
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+    paths:
+      - "taiyaki-backend/**"
+      - ".github/workflows/taiyaki-backend-build-run.yml"
+  workflow_dispatch:
+
+# Avoid overlapping deploys on the same runner
+concurrency:
+  group: taiyaki-backend-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: taiyaki-backend
+  CONTAINER_NAME: taiyaki-backend
+  CONTEXT_DIR: taiyaki-backend
+  DOCKERFILE: taiyaki-backend/Dockerfile
+  HOST_PORT: "8080"
+  CONTAINER_PORT: "8080"
 
 jobs:
-
-  build:
-
+  build-and-run:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build image (tagged latest and with the commit SHA)
+        run: |
+          GIT_SHA=${{ github.sha }}
+          docker build \
+            -f "$DOCKERFILE" "$CONTEXT_DIR" \
+            -t "$IMAGE_NAME:latest" \
+            -t "$IMAGE_NAME:${GIT_SHA::12}" \
+            --build-arg GIT_SHA="${GIT_SHA}"
+
+      - name: Stop & remove old container if running
+        run: |
+          if [ "$(docker ps -q -f name=^/${CONTAINER_NAME}$)" ]; then
+            docker stop "$CONTAINER_NAME"
+            docker rm "$CONTAINER_NAME"
+          elif [ "$(docker ps -aq -f status=exited -f name=^/${CONTAINER_NAME}$)" ]; then
+            docker rm "$CONTAINER_NAME"
+          fi
+
+      # If you need env vars, create taiyaki-backend/.env and uncomment --env-file line below
+      - name: Run container (detached)
+        run: |
+          docker run -d \
+            --name "$CONTAINER_NAME" \
+            -p "${HOST_PORT}:${CONTAINER_PORT}" \
+            --restart unless-stopped \
+            "$IMAGE_NAME:latest"
+            # --env-file "$CONTEXT_DIR/.env" \
+            # -v /host/path:/container/path \
+
+      # Optional: show status for quick debugging in the Actions log
+      - name: Show container status
+        run: |
+          docker ps --filter "name=^/${CONTAINER_NAME}$"
+          echo "--- Last 50 logs ---"
+          docker logs --tail 50 "$CONTAINER_NAME" || true
