@@ -1,18 +1,28 @@
-# Build stage
-FROM maven:3.9.6-eclipse-temurin-21 AS build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+
 WORKDIR /app
 
 COPY pom.xml .
-# COPY checkstyle.xml .
 
-RUN mvn dependency:go-offline
+RUN mvn -B -q -DskipTests dependency:go-offline --no-transfer-progress
 
 COPY src ./src
-RUN mvn package
 
-# Run stage
-FROM openjdk:21-jdk-slim
-COPY --from=build /app/target/taiyaki-0.0.1.jar /usr/local/lib/app.jar
+RUN mvn -B -DskipTests clean package --no-transfer-progress
+
+FROM eclipse-temurin:21-jre-jammy
+
+RUN useradd -r -u 10001 appuser
+
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar /app/app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/usr/local/lib/app.jar"]
+
+ENV JAVA_TOOL_OPTIONS="-XX:+UseContainerSupport"
+
+USER appuser
+
+ENTRYPOINT ["java","-jar","/app/app.jar"]
+CMD []

@@ -1,0 +1,30 @@
+services:
+
+  backend:
+    build:
+      context: ./taiyaki-backend
+      dockerfile: Dockerfile
+    container_name: taiyaki_backend
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=75.0 -XX:+UseContainerSupport
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: taiyaki_database
+      MYSQL_USER: taiyaki_user
+      MYSQL_PASSWORD: taiyaki_password
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_ROOT_HOST: "%"
+    ports:
+    - "3306:3306"
+    volumes:
+    - mysql_data:/var/lib/mysql
+
+volumes:
+    mysql_data:
