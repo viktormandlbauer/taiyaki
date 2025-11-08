@@ -26,4 +26,5 @@ public class Address {
 
     @Column(nullable = false)
     private String country;
+
 }
