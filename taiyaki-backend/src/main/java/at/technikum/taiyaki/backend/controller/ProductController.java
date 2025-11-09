@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/products")
@@ -40,8 +41,19 @@ public class ProductController {
         return productService.updateProduct(productDto);
     }
 
-    @PostMapping("*/{id}/reviews")
-    public ReviewDto CreateReview (@RequestBody @Valid ReviewDto reviewDto) {
-        return productService.createReview(reviewDto);
+
+    //@GetMapping("*/{id}/review")
+    //public List<ReviewDto> findReviewsByProductId (@RequestBody @Valid ReviewDto reviewDto) {
+      //  return productService.findReviewByProduct();
+    // }
+
+
+
+    @PostMapping("/review/add")
+    public ReviewDto addReview (@RequestBody @Valid ReviewDto reviewDto) {
+        return productService.addReview(reviewDto);
     }
+
+
+
 }

@@ -2,15 +2,18 @@ package at.technikum.taiyaki.backend.service;
 
 import at.technikum.taiyaki.backend.dto.ProductDto;
 import at.technikum.taiyaki.backend.dto.ReviewDto;
+import at.technikum.taiyaki.backend.entity.Product;
 import at.technikum.taiyaki.backend.mappers.ProductMapper;
 import at.technikum.taiyaki.backend.mappers.ReviewMapper;
 import at.technikum.taiyaki.backend.repository.ProductRepository;
 import at.technikum.taiyaki.backend.repository.ReviewRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -36,12 +39,6 @@ public class ProductService {
         return productMapper.toDto(productRepository.save(productMapper.toEntity(productDto)));
     }
 
-
-    public ReviewDto createReview(@Valid ReviewDto reviewDto) {
-        return reviewMapper.toDto(reviewRepository.save(reviewMapper.toEntity(reviewDto)));
-    }
-
-
     public ProductDto deleteProduct(@Valid ProductDto productDto) {
         productRepository.delete(productMapper.toEntity(productDto));
         return productDto;
@@ -50,4 +47,15 @@ public class ProductService {
     public ProductDto updateProduct(@Valid ProductDto productDto) {
         return productMapper.toDto(productRepository.save(productMapper.toEntity(productDto)));
     }
+
+    public ReviewDto addReview(@Valid ReviewDto reviewDto) {
+        return reviewMapper.toDto(reviewRepository.save(reviewMapper.toEntity(reviewDto)));
+    }
+
+
+   /* public List<ReviewDto> findReviewByProduct() {
+        return reviewMapper.toDto(reviewRepository.findReviewByProduct());
+    }
+
+    */
 }
