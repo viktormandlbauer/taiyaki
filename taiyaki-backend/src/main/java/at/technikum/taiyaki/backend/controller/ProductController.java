@@ -1,6 +1,8 @@
 package at.technikum.taiyaki.backend.controller;
 
 import at.technikum.taiyaki.backend.dto.ProductDto;
+import at.technikum.taiyaki.backend.dto.ReviewDto;
+import at.technikum.taiyaki.backend.entity.Review;
 import at.technikum.taiyaki.backend.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +28,20 @@ public class ProductController {
     @PostMapping
     public ProductDto CreateProduct (@RequestBody @Valid ProductDto productDto) {
         return productService.createProduct(productDto);
+    }
+
+    @DeleteMapping
+    public ProductDto DeleteProduct (@RequestBody @Valid ProductDto productDto) {
+        return productService.deleteProduct(productDto);
+    }
+
+    @PutMapping
+    public ProductDto UpdateProduct (@RequestBody @Valid ProductDto productDto) {
+        return productService.updateProduct(productDto);
+    }
+
+    @PostMapping("*/{id}/reviews")
+    public ReviewDto CreateReview (@RequestBody @Valid ReviewDto reviewDto) {
+        return productService.createReview(reviewDto);
     }
 }
