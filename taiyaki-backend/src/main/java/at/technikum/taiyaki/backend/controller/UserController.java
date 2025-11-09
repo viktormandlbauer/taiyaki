@@ -22,18 +22,18 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @GetMapping
-    public UserDto getUserById(UUID id){
+    @GetMapping("/{id}")
+    public UserDto getUserById(@PathVariable UUID id) {
         return userService.getUserById(id).orElse(null);
     }
 
-    @GetMapping
-    public Users getUserByUsername(String username){
+    @GetMapping("/{username}")
+    public Users getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping
-    public Users getUserByEmail(String email){
+    @GetMapping("/{email}")
+    public Users getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
     }
 
