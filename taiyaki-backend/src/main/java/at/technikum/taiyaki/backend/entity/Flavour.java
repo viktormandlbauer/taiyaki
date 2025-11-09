@@ -1,8 +1,15 @@
 package at.technikum.taiyaki.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
+
+@Setter
+@Getter
+@NoArgsConstructor
 
 @Entity
 public class Flavour {
@@ -16,22 +23,6 @@ public class Flavour {
 
     public Flavour(UUID id, String name) {
         this.id = id;
-        this.name = name;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 }

@@ -3,19 +3,23 @@ package at.technikum.taiyaki.backend.dto;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 
+@Setter @Getter @NoArgsConstructor
 public class ProductDto {
 
-    private Integer id;
+    private UUID id;
 
     @NotBlank
     private String name;
-    private FlavourDto flavour;
 
-    @NotNull
+    @NotBlank
     private String description;
 
 
@@ -23,7 +27,10 @@ public class ProductDto {
     @DecimalMin(value = "0.00")
     private BigDecimal price;
 
-    public ProductDto(Integer id, BigDecimal price, String description, FlavourDto flavour, String name) {
+    @NotNull
+    private FlavourDto flavour;
+
+    public ProductDto(UUID id, BigDecimal price, String description, FlavourDto flavour, String name) {
         this.id = id;
         this.price = price;
         this.description = description;
@@ -31,43 +38,10 @@ public class ProductDto {
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public FlavourDto getFlavour() {
-        return flavour;
-    }
-
-    public void setFlavour(FlavourDto flavour) {
-        this.flavour = flavour;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
+    public ProductDto(String description, FlavourDto flavour, BigDecimal price, String name) {
         this.description = description;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
+        this.flavour = flavour;
         this.price = price;
+        this.name = name;
     }
 }

@@ -37,7 +37,4 @@ public class SwaggerConfig {
                 .in(SecurityScheme.In.COOKIE)
                 .name("JWT");
     }
-    @EnableJpaAuditing
-    @Configuration
-    public class JpaConfig {}
 }
