@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.catalina.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,7 +38,7 @@ public class Review {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     private Product product;
 
     @ManyToOne
