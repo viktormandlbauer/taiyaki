@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,15 +16,15 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
     private UUID id;
 
     @NotBlank
-    private String firstName;
+    private String firstname;
 
     @NotBlank
-    private String lastName;
+    private String lastname;
 
     @NotEmpty
     private String username;
@@ -37,13 +38,4 @@ public class UserDto {
 
     private String profilePicture;
 
-    public UserDto(UUID id, String firstName, String lastName, String username, String password, String email, String profilePicture) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.profilePicture = profilePicture;
-    }
 }
