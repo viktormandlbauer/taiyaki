@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -22,6 +23,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final ReviewRepository reviewRepository;
     private final ReviewMapper reviewMapper;
+
 
     public ProductService(ProductRepository productRepository, ProductMapper productMapper, ReviewRepository reviewRepository, ReviewMapper reviewMapper) {
         this.productRepository = productRepository;
@@ -53,9 +55,11 @@ public class ProductService {
     }
 
 
-   /* public List<ReviewDto> findReviewByProduct() {
-        return reviewMapper.toDto(reviewRepository.findReviewByProduct());
+    public List<ReviewDto> findReviewByProduct(UUID productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+
+        return reviewMapper.toDto(reviewRepository.findReviewByProduct(product));
     }
 
-    */
 }

@@ -7,6 +7,7 @@ import at.technikum.taiyaki.backend.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,19 +42,15 @@ public class ProductController {
         return productService.updateProduct(productDto);
     }
 
-
-    //@GetMapping("*/{id}/review")
-    //public List<ReviewDto> findReviewsByProductId (@RequestBody @Valid ReviewDto reviewDto) {
-      //  return productService.findReviewByProduct();
-    // }
-
-
-
     @PostMapping("/review/add")
     public ReviewDto addReview (@RequestBody @Valid ReviewDto reviewDto) {
         return productService.addReview(reviewDto);
     }
 
+    @GetMapping("*/{id}/review")
+    public List<ReviewDto> findReviewByProduct (@PathVariable("id") UUID productId) {
+        return productService.findReviewByProduct(productId);
+    }
 
 
 }
