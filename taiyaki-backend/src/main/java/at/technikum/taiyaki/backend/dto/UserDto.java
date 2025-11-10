@@ -2,22 +2,25 @@ package at.technikum.taiyaki.backend.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
+
+
 import java.util.UUID;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
     private UUID id;
+    private String password;
+    private String role;
 
     @NotBlank
     private String firstName;
@@ -25,25 +28,20 @@ public class UserDto {
     @NotBlank
     private String lastName;
 
-    @NotEmpty
+    @NotBlank
     private String username;
 
-    private String password;
-
-    private String role;
-
-    @NotEmpty
+    @NotBlank
+    @Email
     private String email;
 
-    private String profilePicture;
-
-    public UserDto(UUID id, String firstName, String lastName, String username, String password, String email, String profilePicture) {
-        this.id = id;
+    public UserDto(String firstName, String lastName, String username, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.password = password;
         this.email = email;
-        this.profilePicture = profilePicture;
+
+        this.role = "USER";
+        this.password = "";
     }
 }

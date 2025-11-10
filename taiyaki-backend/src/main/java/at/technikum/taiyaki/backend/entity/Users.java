@@ -1,5 +1,6 @@
 package at.technikum.taiyaki.backend.entity;
 
+import at.technikum.taiyaki.backend.entity.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,10 +33,10 @@ public class Users {
     private String role;
 
     @Column(nullable = false)
-    private String firstname;
+    private String firstName;
 
     @Column(nullable = false)
-    private String lastname;
+    private String lastName;
 
     @Column(nullable = false)
     private String email;
@@ -51,5 +52,4 @@ public class Users {
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-
 }

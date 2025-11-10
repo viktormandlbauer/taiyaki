@@ -41,8 +41,7 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto){
-        Users user = userMapper.toEntity(userDto);
-        return userMapper.toDto(userRepository.save(user));
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
     }
 
     public void deleteUser(UUID id){
