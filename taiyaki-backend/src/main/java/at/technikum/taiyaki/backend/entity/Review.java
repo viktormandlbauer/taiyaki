@@ -1,8 +1,12 @@
 package at.technikum.taiyaki.backend.entity;
 
+import at.technikum.taiyaki.backend.dto.ReviewDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -11,6 +15,7 @@ import java.util.UUID;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Setter @Getter @NoArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -38,4 +43,11 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Users user;
+
+    public Review(Product product, ReviewDto reviewDto) {
+        this.product = product;
+        this.reviewTitle = reviewDto.getReviewTitle();
+        this.reviewText = reviewDto.getReviewText();
+        this.rating = reviewDto.getRating();
+    }
 }

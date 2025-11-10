@@ -1,6 +1,8 @@
 package at.technikum.taiyaki.backend.entity;
 
+import at.technikum.taiyaki.backend.dto.ProductDto;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,4 +43,11 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "flavour_id", referencedColumnName = "id")
     private Flavour flavour;
+
+    public Product(String name, String description, BigDecimal price, Flavour flavour) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.flavour = flavour;
+    }
 }

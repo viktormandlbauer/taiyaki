@@ -1,8 +1,10 @@
 package at.technikum.taiyaki.backend.controller;
 
+import at.technikum.taiyaki.backend.dto.FlavourDto;
 import at.technikum.taiyaki.backend.dto.ProductDto;
 import at.technikum.taiyaki.backend.dto.ReviewDto;
 import at.technikum.taiyaki.backend.entity.Review;
+import at.technikum.taiyaki.backend.mappers.ProductMapper;
 import at.technikum.taiyaki.backend.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class ProductController {
         this.productService = productService;
     }
 
+    // Mapping for products
+
     @GetMapping
     public List<ProductDto> getAllProducts(){
         return this.productService.getAll();
@@ -32,25 +36,47 @@ public class ProductController {
         return productService.createProduct(productDto);
     }
 
-    @DeleteMapping
-    public ProductDto DeleteProduct (@RequestBody @Valid ProductDto productDto) {
-        return productService.deleteProduct(productDto);
+    @DeleteMapping("/{productId}")
+    public void DeleteProduct (@PathVariable UUID productId) {
+        productService.deleteProduct(productId);
     }
 
-    @PutMapping
-    public ProductDto UpdateProduct (@RequestBody @Valid ProductDto productDto) {
-        return productService.updateProduct(productDto);
+    @PutMapping("/{productId}")
+    public ProductDto UpdateProduct (@PathVariable UUID productId, @RequestBody @Valid ProductDto productDto) {
+        return productService.updateProduct(productId, productDto);
     }
 
-    @PostMapping("/review/add")
-    public ReviewDto addReview (@RequestBody @Valid ReviewDto reviewDto) {
-        return productService.addReview(reviewDto);
-    }
+    // Mapping for reviews
 
-    @GetMapping("*/{id}/review")
-    public List<ReviewDto> findReviewByProduct (@PathVariable("id") UUID productId) {
+    @GetMapping("/review/{productId}")
+    public List<ReviewDto> findReviewByProduct (@PathVariable UUID productId) {
         return productService.findReviewByProduct(productId);
     }
 
+    @PostMapping("/review/{productId}")
+    public ReviewDto addReview (@PathVariable UUID  productId, @RequestBody @Valid ReviewDto reviewDto) {
+        return productService.addReview(productId, reviewDto);
+    }
 
+    @DeleteMapping("/review/{reviewId}")
+    public void deleteReview (@PathVariable UUID reviewId) {
+        productService.deleteProductReview(reviewId);
+    }
+
+    @PutMapping("/review/{reviewId}")
+    public ReviewDto updateReview (@PathVariable UUID reviewId, @RequestBody @Valid ReviewDto reviewDto) {
+        return productService.updateProductReview(reviewId, reviewDto);
+    }
+
+    // Mapping for flavours
+
+    @GetMapping("/flavours")
+    public List<FlavourDto> findAllFlavours() {
+        return productService.getAllFlavours();
+    }
+
+    @PostMapping("/flavours")
+    public FlavourDto addFlavour (@RequestBody @Valid FlavourDto flavourDto) {
+        return productService.addFlavour(flavourDto);
+    }
 }
