@@ -12,11 +12,11 @@ public class RegisterDto {
 
     @NotBlank
     @Size(max = 50)
-    private String firstName;
+    private String firstname;
 
     @NotBlank
     @Size(max = 50)
-    private String lastName;
+    private String lastname;
 
     @NotBlank
     @Size(max = 30)
