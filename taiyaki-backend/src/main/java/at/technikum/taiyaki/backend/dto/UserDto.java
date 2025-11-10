@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -26,35 +28,22 @@ public class UserDto {
     @NotEmpty
     private String username;
 
-    @NotEmpty
     private String password;
 
+    private String role;
+
     @NotEmpty
-    @Email
     private String email;
 
-    @NotNull
-    private Boolean admin;
-
-    @NotNull
     private String profilePicture;
 
-    @NotEmpty
-    private LocalDateTime createdAt;
-
-    @NotEmpty
-    private LocalDateTime updatedAt;
-
-    public UserDto(UUID id, String firstName, String lastName, String username, String password, String email, Boolean admin, String profilePicture, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UserDto(UUID id, String firstName, String lastName, String username, String password, String email, String profilePicture) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.admin = admin;
         this.profilePicture = profilePicture;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 }

@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable UUID id) {
+    public UserDto getUserById(@PathVariable UUID id, RequestParam identifier) {
         return userService.getUserById(id).orElse(null);
     }
 
