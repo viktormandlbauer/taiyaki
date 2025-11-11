@@ -4,7 +4,6 @@ import at.technikum.taiyaki.backend.dto.UserDto;
 import at.technikum.taiyaki.backend.entity.User;
 import at.technikum.taiyaki.backend.mappers.UserMapper;
 import at.technikum.taiyaki.backend.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +22,7 @@ public class UserService {
     }
 
     public List<UserDto> getUsers(){
-        return userRepository
-                .findAll()
-                .stream()
-                .map(userMapper::toDto)
-                .toList();
+        return userMapper.toDto(userRepository.findAll());
     }
 
     public Optional<UserDto> getUserById(UUID id){
@@ -53,9 +48,10 @@ public class UserService {
     }
 
     public UserDto updateUser(UUID id, @Valid UserDto userDto){
+
         User user = userRepository.findById(id).orElseThrow();
-        user.setFirstName(userDto.getFirstname());
-        user.setLastName(userDto.getLastname());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
 

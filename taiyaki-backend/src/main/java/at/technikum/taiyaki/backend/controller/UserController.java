@@ -4,6 +4,7 @@ import at.technikum.taiyaki.backend.dto.UserDto;
 import at.technikum.taiyaki.backend.entity.User;
 import at.technikum.taiyaki.backend.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Boolean updateUser(@PathVariable UUID id, @RequestBody @Valid UserDto userDto){
         userService.updateUser(id, userDto);
         return true;

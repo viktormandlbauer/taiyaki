@@ -47,10 +47,11 @@ public class ProductService {
 
     public ProductDto createProduct(@Valid ProductDto productDto) {
 
-        Flavour flavour = flavourRepository.findFlavourByName(productDto.getFlavour());
-        Product product = new Product(productDto.getName(), productDto.getDescription(), productDto.getPrice(), flavour);
+        // Flavour flavour = flavourRepository.findFlavourByName(productDto.getFlavour());
+        // Product product = new Product(productDto.getName(), productDto.getDescription(), productDto.getPrice(), flavour);
+        // return productMapper.toDto(productRepository.save(product));
 
-        return productMapper.toDto(productRepository.save(product));
+        return productMapper.toDto(productRepository.save(productMapper.toEntity(productDto)));
     }
 
     public void deleteProduct(UUID productId) {
