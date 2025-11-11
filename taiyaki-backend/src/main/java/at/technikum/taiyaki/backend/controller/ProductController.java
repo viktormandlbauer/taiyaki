@@ -9,6 +9,7 @@ import at.technikum.taiyaki.backend.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +32,18 @@ public class ProductController {
         return this.productService.getAll();
     }
 
+    @GetMapping("/{productId}")
+    public ProductDto getProductById(@PathVariable UUID productId){
+        return productService.getProduct(productId);
+    }
+
     @PostMapping
-    public ProductDto CreateProduct (@RequestBody @Valid ProductDto productDto) {
+    public ProductDto createProduct (@RequestBody @Valid ProductDto productDto) {
         return productService.createProduct(productDto);
     }
 
     @DeleteMapping("/{productId}")
-    public void DeleteProduct (@PathVariable UUID productId) {
+    public void deleteProduct (@PathVariable UUID productId) {
         productService.deleteProduct(productId);
     }
 
@@ -76,6 +82,7 @@ public class ProductController {
     }
 
     @PostMapping("/flavours")
+    @ResponseStatus(HttpStatus.CREATED)
     public FlavourDto addFlavour (@RequestBody @Valid FlavourDto flavourDto) {
         return productService.addFlavour(flavourDto);
     }

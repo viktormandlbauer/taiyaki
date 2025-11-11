@@ -1,9 +1,10 @@
 package at.technikum.taiyaki.backend.service;
 
 import at.technikum.taiyaki.backend.dto.UserDto;
-import at.technikum.taiyaki.backend.entity.Users;
+import at.technikum.taiyaki.backend.entity.User;
 import at.technikum.taiyaki.backend.mappers.UserMapper;
 import at.technikum.taiyaki.backend.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,17 +22,14 @@ public class UserService {
     }
 
     public List<UserDto> getUsers(){
-        return userRepository
-                .findAll()
-                .stream()
-                .map(userMapper::toDto)
-                .toList();
+        return userMapper.toDto(userRepository.findAll());
     }
 
     public Optional<UserDto> getUserById(UUID id){
         return userRepository.findById(id).map(userMapper::toDto);
     }
 
+    /* TODO: Fixing
     public Users getUserByUsername(String username){
         return userRepository.findByUsername(username);
     }
@@ -39,6 +37,7 @@ public class UserService {
     public Users getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
+    */
 
     public UserDto createUser(UserDto userDto){
         return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
@@ -48,7 +47,14 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void updateUser(UUID id, UserDto userDto){
-        userRepository.save(userMapper.toEntity(userDto));
+    public UserDto updateUser(UUID id, @Valid UserDto userDto){
+
+        User user = userRepository.findById(id).orElseThrow();
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
+        user.setUsername(userDto.getUsername());
+
+        return userMapper.toDto(userRepository.save(user));
     }
 }

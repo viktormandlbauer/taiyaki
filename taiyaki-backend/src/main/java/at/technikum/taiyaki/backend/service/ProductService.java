@@ -6,15 +6,12 @@ import at.technikum.taiyaki.backend.dto.ReviewDto;
 import at.technikum.taiyaki.backend.entity.Flavour;
 import at.technikum.taiyaki.backend.entity.Product;
 import at.technikum.taiyaki.backend.entity.Review;
-import at.technikum.taiyaki.backend.entity.Users;
 import at.technikum.taiyaki.backend.mappers.FlavourMapper;
 import at.technikum.taiyaki.backend.mappers.ProductMapper;
 import at.technikum.taiyaki.backend.mappers.ReviewMapper;
-import at.technikum.taiyaki.backend.mappers.UserMapper;
 import at.technikum.taiyaki.backend.repository.FlavourRepository;
 import at.technikum.taiyaki.backend.repository.ProductRepository;
 import at.technikum.taiyaki.backend.repository.ReviewRepository;
-import at.technikum.taiyaki.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -50,10 +47,11 @@ public class ProductService {
 
     public ProductDto createProduct(@Valid ProductDto productDto) {
 
-        Flavour flavour = flavourRepository.findFlavourByName(productDto.getFlavour());
-        Product product = new Product(productDto.getName(), productDto.getDescription(), productDto.getPrice(), flavour);
+        // Flavour flavour = flavourRepository.findFlavourByName(productDto.getFlavour());
+        // Product product = new Product(productDto.getName(), productDto.getDescription(), productDto.getPrice(), flavour);
+        // return productMapper.toDto(productRepository.save(product));
 
-        return productMapper.toDto(productRepository.save(product));
+        return productMapper.toDto(productRepository.save(productMapper.toEntity(productDto)));
     }
 
     public void deleteProduct(UUID productId) {
@@ -110,5 +108,9 @@ public class ProductService {
         review.setReviewTitle(reviewDto.getReviewTitle());
         review.setReviewText(reviewDto.getReviewText());
         return this.reviewMapper.toDto(this.reviewRepository.save(review));
+    }
+
+    public ProductDto getProduct(UUID productId) {
+        return this.productMapper.toDto(productRepository.findById(productId).orElse(null));
     }
 }
