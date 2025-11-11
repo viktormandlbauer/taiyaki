@@ -1,6 +1,5 @@
 package at.technikum.taiyaki.backend.entity;
 
-import at.technikum.taiyaki.backend.entity.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,8 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Users {
+@Table(name = "\"User\"")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

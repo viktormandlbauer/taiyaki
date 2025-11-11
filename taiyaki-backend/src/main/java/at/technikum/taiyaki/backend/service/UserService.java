@@ -1,7 +1,7 @@
 package at.technikum.taiyaki.backend.service;
 
 import at.technikum.taiyaki.backend.dto.UserDto;
-import at.technikum.taiyaki.backend.entity.Users;
+import at.technikum.taiyaki.backend.entity.User;
 import at.technikum.taiyaki.backend.mappers.UserMapper;
 import at.technikum.taiyaki.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -32,11 +32,11 @@ public class UserService {
         return userRepository.findById(id).map(userMapper::toDto);
     }
 
-    public Users getUserByUsername(String username){
+    public User getUserByUsername(String username){
         return userRepository.findByUsername(username);
     }
 
-    public Users getUserByEmail(String email){
+    public User getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
 

@@ -13,7 +13,8 @@ import java.util.UUID;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Orders {
+@Table(name = "\"Order\"")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -28,5 +29,5 @@ public class Orders {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Users user;
+    private User user;
 }

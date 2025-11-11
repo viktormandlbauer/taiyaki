@@ -1,7 +1,7 @@
 package at.technikum.taiyaki.backend.controller;
 
 import at.technikum.taiyaki.backend.dto.UserDto;
-import at.technikum.taiyaki.backend.entity.Users;
+import at.technikum.taiyaki.backend.entity.User;
 import at.technikum.taiyaki.backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +29,12 @@ public class UserController {
     }
 
     @GetMapping("/by-username/{username}")
-    public Users getUserByUsername(@PathVariable String username) {
+    public User getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
     @GetMapping("/by-email/{email}")
-    public Users getUserByEmail(@PathVariable String email) {
+    public User getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
     }
 
