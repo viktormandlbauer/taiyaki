@@ -16,7 +16,8 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Users {
+@Table(name = "\"User\"")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,10 +33,10 @@ public class Users {
     private String role;
 
     @Column(nullable = false)
-    private String firstname;
+    private String firstName;
 
     @Column(nullable = false)
-    private String lastname;
+    private String lastName;
 
     @Column(nullable = false)
     private String email;
@@ -51,5 +52,4 @@ public class Users {
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-
 }

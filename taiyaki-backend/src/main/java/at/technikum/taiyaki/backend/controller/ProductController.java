@@ -31,13 +31,18 @@ public class ProductController {
         return this.productService.getAll();
     }
 
+    @GetMapping("/{productId}")
+    public ProductDto getProductById(@PathVariable UUID productId){
+        return productService.getProduct(productId);
+    }
+
     @PostMapping
-    public ProductDto CreateProduct (@RequestBody @Valid ProductDto productDto) {
+    public ProductDto createProduct (@RequestBody @Valid ProductDto productDto) {
         return productService.createProduct(productDto);
     }
 
     @DeleteMapping("/{productId}")
-    public void DeleteProduct (@PathVariable UUID productId) {
+    public void deleteProduct (@PathVariable UUID productId) {
         productService.deleteProduct(productId);
     }
 

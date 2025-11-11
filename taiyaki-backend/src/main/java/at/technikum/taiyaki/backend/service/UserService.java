@@ -1,8 +1,7 @@
 package at.technikum.taiyaki.backend.service;
 
 import at.technikum.taiyaki.backend.dto.UserDto;
-import at.technikum.taiyaki.backend.entity.Flavour;
-import at.technikum.taiyaki.backend.entity.Users;
+import at.technikum.taiyaki.backend.entity.User;
 import at.technikum.taiyaki.backend.mappers.UserMapper;
 import at.technikum.taiyaki.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -46,8 +45,7 @@ public class UserService {
     */
 
     public UserDto createUser(UserDto userDto){
-        Users user = userMapper.toEntity(userDto);
-        return userMapper.toDto(userRepository.save(user));
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
     }
 
     public void deleteUser(UUID id){
@@ -55,9 +53,9 @@ public class UserService {
     }
 
     public UserDto updateUser(UUID id, @Valid UserDto userDto){
-        Users user = userRepository.findById(id).orElseThrow();
-        user.setFirstname(userDto.getFirstname());
-        user.setLastname(userDto.getLastname());
+        User user = userRepository.findById(id).orElseThrow();
+        user.setFirstName(userDto.getFirstname());
+        user.setLastName(userDto.getLastname());
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
 
