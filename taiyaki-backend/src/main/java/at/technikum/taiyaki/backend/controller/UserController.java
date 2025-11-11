@@ -4,6 +4,7 @@ import at.technikum.taiyaki.backend.dto.UserDto;
 import at.technikum.taiyaki.backend.entity.User;
 import at.technikum.taiyaki.backend.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDto> getAllUsers() {
+    public List<UserDto> getAllUsers(){
         return userService.getUsers();
     }
 
@@ -28,15 +29,17 @@ public class UserController {
         return userService.getUserById(id).orElse(null);
     }
 
-    @GetMapping("/by-username/{username}")
-    public User getUserByUsername(@PathVariable String username) {
+    /* TODO: Fixing
+    @GetMapping("/{username}")
+    public Users getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping("/by-email/{email}")
-    public User getUserByEmail(@PathVariable String email) {
+    @GetMapping("/{email}")
+    public Users getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
     }
+    */
 
     @PostMapping
     public UserDto createUser(@Valid @RequestBody UserDto userDto) {
@@ -44,13 +47,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public Boolean deleteUser(@PathVariable UUID id) {
+    public Boolean deleteUser(@PathVariable UUID id){
         userService.deleteUser(id);
         return true;
     }
 
     @PutMapping("/{id}")
-    public Boolean updateUser(@PathVariable UUID id, @Valid @RequestBody UserDto userDto) {
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean updateUser(@PathVariable UUID id, @RequestBody @Valid UserDto userDto){
         userService.updateUser(id, userDto);
         return true;
     }
