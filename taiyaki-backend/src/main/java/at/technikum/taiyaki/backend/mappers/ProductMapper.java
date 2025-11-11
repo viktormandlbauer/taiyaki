@@ -1,6 +1,7 @@
 package at.technikum.taiyaki.backend.mappers;
 
 import at.technikum.taiyaki.backend.dto.ProductDto;
+import at.technikum.taiyaki.backend.dto.order.ProductInOrderDetailsDto;
 import at.technikum.taiyaki.backend.entity.Product;
 import org.mapstruct.Mapper;
 
@@ -12,4 +13,6 @@ public interface ProductMapper {
     Product toEntity(ProductDto dto);
     List <ProductDto> toDto(List<Product> entity);
     List<Product> toEntity(List <ProductDto> dto);
+
+    ProductInOrderDetailsDto toProductInOrderDetailsDto(Product product, int quantity);
 }

@@ -21,12 +21,12 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderDetailsDto> getOrders() {
+    public List<OrderDto> getOrders() {
         return this.orderService.getAllOrders();
     }
 
     @PostMapping
-    public OrderDetailsDto createOrder(@RequestBody @Valid OrderDetailsDto orderDto) {
+    public OrderDto createOrder(@RequestBody @Valid OrderDto orderDto) {
         return this.orderService.createOrder(orderDto);
     }
 
@@ -42,8 +42,17 @@ public class OrderController {
     }
 
     @PostMapping("/{orderId}/add")
-    public boolean addProductToOrder(@PathVariable UUID orderId, @RequestBody @Valid OrderProductDto orderProductDto) {
+    public void addProductToOrder(@PathVariable UUID orderId, @RequestBody @Valid OrderProductDto orderProductDto) {
         this.orderService.addProduct(orderId, orderProductDto);
-        return true;
+    }
+
+    @DeleteMapping("/{orderId}/remove/{productId}")
+    public void removeProductFromOrder(@PathVariable UUID orderId, @PathVariable UUID productId) {
+        this.orderService.removeProductFromOrder(orderId, productId);
+    }
+
+    @GetMapping("/{orderId}/details")
+    public OrderDetailsDto getOrderDetails(@PathVariable UUID orderId) {
+        return this.orderService.getOrderDetails(orderId);
     }
 }
