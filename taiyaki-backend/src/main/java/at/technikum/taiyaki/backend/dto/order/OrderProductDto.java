@@ -12,6 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderProductDto {
     private UUID id;
-    @Min(0)
+    @Min(1)
     int quantity;
 }

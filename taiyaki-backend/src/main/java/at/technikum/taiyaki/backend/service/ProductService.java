@@ -17,6 +17,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +44,10 @@ public class ProductService {
 
     public List<ProductDto> getAll() {
         return productMapper.toDto(productRepository.findAll());
+    }
+
+    public List<ProductDto> getProductsBetweenPrice(BigDecimal min, BigDecimal max) {
+        return productMapper.toDto(productRepository.findProductsByPriceBetween(min, max));
     }
 
     public ProductDto createProduct(@Valid ProductDto productDto) {

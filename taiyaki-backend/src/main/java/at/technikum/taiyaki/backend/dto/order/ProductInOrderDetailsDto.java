@@ -1,5 +1,7 @@
 package at.technikum.taiyaki.backend.dto.order;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,10 @@ import java.util.UUID;
 public class ProductInOrderDetailsDto {
     private UUID id;
     private String name;
+
+    @Positive
     private BigDecimal price;
-    private Integer quantity;
+
+   @Min(1)
+   private Integer quantity;
 }
