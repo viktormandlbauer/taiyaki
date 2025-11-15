@@ -1,11 +1,7 @@
-<script setup>
-
-</script>
-
 <template>
-<div> Herrow IT Chefe, we did it!</div>
+ <RouterView />
 </template>
 
-<style scoped>
-
-</style>
+<script setup>
+import { RouterView } from 'vue-router';
+</script>
