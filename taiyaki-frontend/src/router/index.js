@@ -9,7 +9,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/assets/pages/auth/LoginVIew.vue'),
+    component: () => import('@/assets/pages/auth/LoginView.vue'),
   },
   {
     path: '/register',
