@@ -49,6 +49,6 @@ import { RouterLink } from "vue-router";
 
 <style scoped>
 .taiyaki-footer {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(59, 18, 22, 0.6);
 }
 </style>
