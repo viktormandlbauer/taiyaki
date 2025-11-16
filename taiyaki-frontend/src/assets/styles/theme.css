@@ -1,5 +1,6 @@
 :root {
-  --taiyaki-primary: #A7333F;
+  --taiyaki-primary: #74121D;
+  --taiyaki-secondary: #E88D67;
   --taiyaki-primary-dark: #8e2934;
   --taiyaki-primary-light: #fbe6e8;
 }
@@ -54,6 +55,15 @@
   background-color: var(--taiyaki-primary-light);
   border-color: var(--taiyaki-primary-light);
   color: #4b2b30;
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--taiyaki-primary);
+  color: #fff;
+}
+
+.nav-pills .nav-link {
+  color: var(--taiyaki-primary);
 }
 
 .app-background {

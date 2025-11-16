@@ -1,4 +1,4 @@
-<!-- src/components/TaiyakiNavbar.vue -->
+<!-- src/components/Navbar.vue -->
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark taiyaki-navbar mb-4">
     <div class="container">
@@ -46,14 +46,15 @@
 
         <!-- Right: profile + cart icons -->
         <div class="d-flex align-items-center gap-3">
-          <!-- Profile -->
-          <RouterLink
-            class="nav-link p-0"
-            to="/profile"
+          <!-- Profile icon: opens modal if not logged in -->
+          <button
+            type="button"
+            class="btn p-0 border-0 bg-transparent nav-link"
             aria-label="Profile"
+            @click="handleProfileClick"
           >
             <i class="bi bi-person fs-4"></i>
-          </RouterLink>
+          </button>
 
           <!-- Cart (with badge) -->
           <RouterLink
@@ -73,14 +74,42 @@
       </div>
     </div>
   </nav>
+
+  <!-- Outsourced auth modal -->
+  <AuthModal
+    v-model:visible="showAuthModal"
+    @auth-success="handleAuthSuccess"
+  />
 </template>
 
 <script setup>
-import { RouterLink } from "vue-router";
+import { ref } from "vue";
+import { RouterLink, useRouter } from "vue-router";
+import AuthModal from "@/components/AuthModal.vue";
+
+const router = useRouter();
+
+const isLoggedIn = ref(false);
+const showAuthModal = ref(false);
+
+const handleProfileClick = () => {
+  if (isLoggedIn.value) {
+    router.push("/profile");
+  } else {
+    showAuthModal.value = true;
+  }
+};
+
+const handleAuthSuccess = (payload) => {
+  // payload = { mode: 'login'|'register', email: string }
+  isLoggedIn.value = true;
+  // After successful login/registration, go to profile
+  router.push("/profile");
+};
 </script>
 
 <style scoped>
 .taiyaki-navbar {
-  background-color: #A7333F;
+  background-color: var(--taiyaki-primary);
 }
 </style>

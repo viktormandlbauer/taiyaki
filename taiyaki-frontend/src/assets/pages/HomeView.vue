@@ -3,7 +3,7 @@
     <!-- Hero / Jumbotron -->
     <section
       class="p-5 mb-4 rounded-3 text-center text-white"
-      style="background-color: #A7333F;"
+      style="background-color: var(--taiyaki-primary);"
     >
       <h1 class="display-5 fw-bold mb-3">
         Welcome to Taiyaki!
@@ -26,9 +26,6 @@
 
     <!-- Products below hero (page becomes scrollable) -->
     <section class="mb-5">
-      <h2 class="text-center mb-4 text-white">
-        Our Favorites
-      </h2>
 
       <div class="row g-4">
         <div
@@ -52,6 +49,48 @@
 import ProductCard from "@/components/ProductCard.vue";
 
 const products = [
+  {
+    id: 1,
+    title: "Cheesy Taiyaki",
+    price: 9.99,
+    rating: 4,
+    sizes: ["3 pcs", "9 pcs", "24 pcs"],
+  },
+  {
+    id: 2,
+    title: "Classic Red Bean",
+    price: 8.49,
+    rating: 5,
+    sizes: ["3 pcs", "6 pcs", "12 pcs"],
+  },
+  {
+    id: 3,
+    title: "Custard Dream",
+    price: 8.99,
+    rating: 4,
+    sizes: ["3 pcs", "9 pcs", "24 pcs"],
+  },
+  {
+    id: 1,
+    title: "Cheesy Taiyaki",
+    price: 9.99,
+    rating: 4,
+    sizes: ["3 pcs", "9 pcs", "24 pcs"],
+  },
+  {
+    id: 2,
+    title: "Classic Red Bean",
+    price: 8.49,
+    rating: 5,
+    sizes: ["3 pcs", "6 pcs", "12 pcs"],
+  },
+  {
+    id: 3,
+    title: "Custard Dream",
+    price: 8.99,
+    rating: 4,
+    sizes: ["3 pcs", "9 pcs", "24 pcs"],
+  },
   {
     id: 1,
     title: "Cheesy Taiyaki",

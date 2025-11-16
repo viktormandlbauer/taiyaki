@@ -47,7 +47,7 @@ const props = defineProps({
 
 /* Heading + subtitle colors */
 h1 {
-  color: #a7333f; /* brand red for title */
+  color: var(--taiyaki-primary);
 }
 
 .subtitle-text {
@@ -70,7 +70,7 @@ h1 {
 
 /* Links inside info pages */
 .info-content a {
-  color: #a7333f;
+  color: var(--taiyaki-primary);
   text-decoration: underline;
 }
 .info-content a:hover {

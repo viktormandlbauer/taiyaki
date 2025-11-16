@@ -22,13 +22,15 @@ import appBackground from "@/assets/images/taiyaki-hero.jpg";
 
 const appStyle = {
   backgroundImage: `url(${appBackground})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
+  backgroundSize: "440px 440px",
+  backgroundRepeat: "repeat",
+  backgroundPosition: "top left",
   backgroundAttachment: "fixed",
 };
 </script>
 
 <style>
-
+.app-background {
+  background-color: #fff5f5; /* fallback color under tiles */
+}
 </style>
