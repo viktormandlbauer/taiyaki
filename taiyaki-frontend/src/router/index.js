@@ -1,29 +1,87 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "../assets/pages/LoginView.vue";
-import RegisterView from "../assets/pages/RegisterView.vue";
-import ProductsView from "../assets/pages/ProductsView.vue";
 
 const routes = [
   {
-    path: "/",
-    redirect: "/login", // default route
+    path: '/',
+    name: 'home',
+    component: () => import('@/assets/pages/HomeView.vue'),
   },
   {
-    path: "/login",
-    name: "login",
-    component: LoginView,
+    path: '/login',
+    name: 'login',
+    component: () => import('@/assets/pages/auth/LoginVIew.vue'),
   },
   {
-    path: "/register",
-    name: "register",
-    component: RegisterView,
+    path: '/register',
+    name: 'register',
+    component: () => import('@/assets/pages/auth/RegisterView.vue'),
   },
   {
-    path: "/products",
-    name: "products",
-    component: ProductsView,
+    path: '/products',
+    name: 'products',
+    component: () => import('@/assets/pages/shopping/ProductsView.vue'),
   },
-];
+  {
+    path: '/allergies',
+    name: 'allergies',
+    component: () => import('@/assets/pages/info/AllergiesView.vue'),
+  },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: () => import('@/assets/pages/info/ContactView.vue'),
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import('@/assets/pages/info/AboutView.vue'),
+  },
+  {
+    path: '/imprint',
+    name: 'imprint',
+    component: () => import('@/assets/pages/info/ImprintView.vue'),
+  },
+  {
+    path: '/help',
+    name: 'help',
+    component: () => import('@/assets/pages/info/HelpView.vue'),
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/assets/pages/user/ProfileView.vue'),
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('@/assets/pages/shopping/CartView.vue'),
+  },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: () => import('@/assets/pages/shopping/CheckoutView.vue'),
+  },
+  {
+    path: '/admin',
+    name: 'admin-dashboard',
+    component: () => import('@/assets/pages/admin/AdminDashboardView.vue'),
+  },
+  {
+    path: '/admin/users',
+    name: 'admin-users',
+    component: () => import('@/assets/pages/admin/UserManagementView.vue'),
+  },
+  {
+    path: '/admin/products',
+    name: 'admin-products',
+    component: () => import('@/assets/pages/admin/ProductManagementView.vue'),
+  },
+  {
+    path: '/admin/orders',
+    name: 'admin-orders',
+    component: () => import('@/assets/pages/admin/OrderManagementView.vue'),
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(),
