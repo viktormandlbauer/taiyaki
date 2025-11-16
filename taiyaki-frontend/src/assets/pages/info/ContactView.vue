@@ -42,7 +42,7 @@
       <h2 class="h5 mb-2">📦 Returns &amp; Exchanges</h2>
       <p class="mb-1">
         If there’s an issue with your delivery, please reach out to
-        <a href="mailto:returns@taiyaki.com" class="link-light">
+        <a href="mailto:returns@taiyaki.com" class="link-dark">
           returns@taiyaki.com
         </a>
         within 7 days of receiving your order.

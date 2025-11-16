@@ -1,11 +1,10 @@
 <template>
   <InfoPage
     title="Allergies & Ingredients Information"
-    emoji="⚕️"
     subtitle="Please read carefully before ordering."
   >
     <section class="mb-4">
-      <h2 class="h4 mb-3">🍰 We Care About What’s Inside</h2>
+      <h2 class="h4 mb-3">We Care About What’s Inside</h2>
       <p>
         At Taiyaki, your safety and satisfaction are our top priorities.
         All our taiyaki are freshly baked in our Berlin kitchen,
@@ -36,7 +35,7 @@
     </section>
 
     <section class="mb-4">
-      <h2 class="h4 mb-3">🧁 Vegan &amp; Dairy-Free Options</h2>
+      <h2 class="h4 mb-3">Vegan &amp; Dairy-Free Options</h2>
       <p>
         We are proud to offer vegan taiyaki flavours made without eggs or dairy.
         These are baked using a separate recipe, but they are produced in the same kitchen,
@@ -49,7 +48,7 @@
     </section>
 
     <section class="mb-4">
-      <h2 class="h4 mb-3">📦 Ingredient Transparency</h2>
+      <h2 class="h4 mb-3">Ingredient Transparency</h2>
       <p>
         We believe in being open about what goes into every taiyaki.
         You can find a complete list of ingredients and allergens on each product’s page.
@@ -57,7 +56,7 @@
       <p class="mb-0">
         If you have a severe allergy or need custom information,
         please email us at
-        <a href="mailto:allergies@taiyaki.com" class="link-light">
+        <a href="mailto:allergies@taiyaki.com" class="link-dark">
           allergies@taiyaki.com
         </a>.
         We’ll be happy to help and provide detailed ingredient sheets.

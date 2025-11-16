@@ -1,11 +1,10 @@
 <template>
   <InfoPage
     title="About Us"
-    emoji="🐟"
     subtitle="A bite of Japan in every smile."
   >
     <section class="mb-4">
-      <h2 class="h4 mb-3">Welcome to Taiyaki – A Bite of Japan in Every Smile</h2>
+      <h2 class="h4 mb-3">❤️ Welcome to Taiyaki – A Bite of Japan in Every Smile</h2>
       <p>
         At Taiyaki, we believe every bite should tell a story.
       </p>
@@ -21,7 +20,7 @@
     </section>
 
     <section class="mb-4">
-      <h2 class="h4 mb-3">🍰 Our Flavours, Your Favorites</h2>
+      <h2 class="h4 mb-3">Our Flavours, Your Favorites</h2>
       <p>
         From the classic red bean to matcha cream, custard, chocolate, and even seasonal specialties,
         each taiyaki is crafted with care, using high-quality ingredients and a touch of nostalgia.
@@ -33,7 +32,7 @@
     </section>
 
     <section class="mb-4">
-      <h2 class="h4 mb-3">🌸 Our Mission</h2>
+      <h2 class="h4 mb-3">Our Mission</h2>
       <p>
         Our mission is to bring a little bit of Japanese happiness to your everyday moments –
         one taiyaki at a time. We’re passionate about tradition, creativity, and spreading joy
@@ -45,7 +44,7 @@
     </section>
 
     <section class="mb-4">
-      <h2 class="h4 mb-3">❤️ Made with Care in Berlin</h2>
+      <h2 class="h4 mb-3">Made with Care in Berlin</h2>
       <p>
         All our taiyaki are lovingly made in our Berlin-based kitchen, combining authentic Japanese
         techniques with European quality standards.
@@ -61,7 +60,7 @@
     </section>
 
     <section class="mb-4">
-      <h2 class="h4 mb-3">🌟 From Our Kitchen to Your Heart</h2>
+      <h2 class="h4 mb-3">From Our Kitchen to Your Heart</h2>
       <p>
         Every taiyaki we bake carries a little bit of joy – from the first swirl of batter to
         the final golden crunch. We’re more than just a webshop; we’re a small team of dreamers

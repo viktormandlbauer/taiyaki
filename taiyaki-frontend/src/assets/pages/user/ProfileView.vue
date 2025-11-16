@@ -175,7 +175,7 @@
                 v-model="cardName"
                 type="text"
                 class="form-control"
-                placeholder="Tania Example"
+                placeholder="Maxi Mustermann"
               />
             </div>
             <div class="mb-3">
