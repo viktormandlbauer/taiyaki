@@ -1,0 +1,61 @@
+:root {
+  --taiyaki-primary: #A7333F;
+  --taiyaki-primary-dark: #8e2934;
+  --taiyaki-primary-light: #fbe6e8;
+}
+
+/* Override Bootstrap primary buttons globally */
+.btn-primary {
+  background-color: var(--taiyaki-primary);
+  border-color: var(--taiyaki-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--taiyaki-primary-dark);
+  border-color: var(--taiyaki-primary-dark);
+}
+
+/* Outline primary */
+.btn-outline-primary {
+  color: var(--taiyaki-primary);
+  border-color: var(--taiyaki-primary);
+  background-color: transparent;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  color: #fff;
+  background-color: var(--taiyaki-primary);
+  border-color: var(--taiyaki-primary);
+}
+
+/* Secondary buttons for light actions (optional) */
+.btn-secondary {
+  background-color: var(--taiyaki-primary-light);
+  border-color: var(--taiyaki-primary-light);
+  color: #4b2b30;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: #f3ccd2;
+  border-color: #f3ccd2;
+}
+
+/* Outline secondary */
+.btn-outline-secondary {
+  color: #4b2b30;
+  border-color: #e2d0d4;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+  background-color: var(--taiyaki-primary-light);
+  border-color: var(--taiyaki-primary-light);
+  color: #4b2b30;
+}
+
+.app-background {
+  background-color: #fff5f5;
+}
