@@ -85,7 +85,7 @@
 <script setup>
 import { ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
-import AuthModal from "@/components/AuthModal.vue";
+import AuthModal from "@/components/auth/AuthModal.vue";
 
 const router = useRouter();
 
