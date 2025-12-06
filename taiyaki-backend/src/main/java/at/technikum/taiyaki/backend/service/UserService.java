@@ -57,4 +57,13 @@ public class UserService {
 
         return userMapper.toDto(userRepository.save(user));
     }
+
+    public User findByIdentifier(String identifier) {
+        if(identifier.contains("@")) {
+            return userRepository.findByEmail(identifier);
+        }
+        else {
+            return userRepository.findByUsername(identifier);
+        }
+    }
 }

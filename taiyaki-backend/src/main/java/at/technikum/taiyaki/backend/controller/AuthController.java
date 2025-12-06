@@ -1,9 +1,10 @@
 package at.technikum.taiyaki.backend.controller;
 
-import at.technikum.taiyaki.backend.dto.auth.LoginDto;
+import at.technikum.taiyaki.backend.dto.auth.TokenRequestDto;
 import at.technikum.taiyaki.backend.dto.auth.RegisterDto;
+import at.technikum.taiyaki.backend.dto.auth.TokenResponseDto;
 import at.technikum.taiyaki.backend.service.AuthService;
-import at.technikum.taiyaki.backend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,15 +20,14 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/login")
-    public boolean login(@RequestBody LoginDto loginDto) {
-        // @TODO
-        return false;
-    }
-
     @PostMapping("/register")
     public boolean register(@RequestBody RegisterDto registerDto) {
         // @TODO
         return false;
     }
+
+     @PostMapping("/token")
+    public TokenResponseDto token (@RequestBody @Valid final TokenRequestDto tokenRequestDto){
+        return authService.authenticate(tokenRequestDto);
+     }
 }
