@@ -11,11 +11,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Component
-public class JwtIssuer implements TokenIssuer{
+public class JwtIssuer implements TokenIssuer {
     private final JwtProperties jwtProperties;
 
     public JwtIssuer(JwtProperties jwtProperties){
-        this.jwtProperties =jwtProperties;
+        this.jwtProperties = jwtProperties;
     }
 
     @Override
@@ -25,7 +25,6 @@ public class JwtIssuer implements TokenIssuer{
                 .withExpiresAt(Instant.now().plus(Duration.of(1, ChronoUnit.DAYS)))
                 .withClaim("username", username)
                 .withClaim("role", role)
-                .sign(Algorithm.HMAC256(jwtProperties.getSecret()))
-                ;
+                .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
     }
 }

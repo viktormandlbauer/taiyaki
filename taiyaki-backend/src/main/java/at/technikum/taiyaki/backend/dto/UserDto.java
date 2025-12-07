@@ -1,5 +1,6 @@
 package at.technikum.taiyaki.backend.dto;
 
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class UserDto {
     @NotBlank private String firstName;
     @NotBlank private String lastName;
     @NotBlank @Email private String email;
-    @NotBlank private String username;
+    @NotBlank String username;
 
     private String password;
     private String role;

@@ -41,11 +41,6 @@ public class UserController {
     }
     */
 
-    @PostMapping
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
-    }
-
     @DeleteMapping("/{id}")
     public Boolean deleteUser(@PathVariable UUID id){
         userService.deleteUser(id);

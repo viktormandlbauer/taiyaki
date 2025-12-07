@@ -1,10 +1,13 @@
 package at.technikum.taiyaki.backend.service;
 
 import at.technikum.taiyaki.backend.dto.UserDto;
+import at.technikum.taiyaki.backend.dto.auth.RegisterDto;
 import at.technikum.taiyaki.backend.entity.User;
+import at.technikum.taiyaki.backend.mappers.RegistrationMapper;
 import at.technikum.taiyaki.backend.mappers.UserMapper;
 import at.technikum.taiyaki.backend.repository.UserRepository;
 import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +18,18 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final RegistrationMapper registrationMapper;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(
+            UserRepository userRepository,
+            UserMapper userMapper,
+            PasswordEncoder passwordEncoder,
+            RegistrationMapper registerMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.registrationMapper = registerMapper;
     }
 
     public List<UserDto> getUsers(){
@@ -39,8 +50,20 @@ public class UserService {
     }
     */
 
-    public UserDto createUser(UserDto userDto){
-        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+    public boolean createUser(RegisterDto registerDto){
+        User user = registrationMapper.toEntity(registerDto);
+
+        if(userRepository.findByEmail(registerDto.getEmail()) != null) return false;
+        if(userRepository.findByUsername(registerDto.getUsername()) != null) return false;
+
+        String hashedPassword = passwordEncoder.encode(registerDto.getPassword());
+        user.setPassword(hashedPassword);
+        user.setRole("ROLE_USER");
+
+        userRepository.save(user);
+        System.out.println("User \"" + user.getUsername() + "\" successfully created.");
+
+        return true;
     }
 
     public void deleteUser(UUID id){
@@ -48,7 +71,6 @@ public class UserService {
     }
 
     public UserDto updateUser(UUID id, @Valid UserDto userDto){
-
         User user = userRepository.findById(id).orElseThrow();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());

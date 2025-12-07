@@ -1,8 +1,8 @@
 package at.technikum.taiyaki.backend.service;
 
 import at.technikum.taiyaki.backend.dto.auth.RegisterDto;
-import at.technikum.taiyaki.backend.dto.auth.TokenRequestDto;
-import at.technikum.taiyaki.backend.dto.auth.TokenResponseDto;
+import at.technikum.taiyaki.backend.dto.auth.LoginRequestDto;
+import at.technikum.taiyaki.backend.dto.auth.LoginResponseDto;
 import at.technikum.taiyaki.backend.security.UserPrincipal;
 import at.technikum.taiyaki.backend.security.jwt.TokenIssuer;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,9 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
 
-    public TokenResponseDto authenticate(TokenRequestDto authRequest){
+    private final UserService userService;
+
+    public LoginResponseDto authenticate(LoginRequestDto authRequest){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getIdentifier(), authRequest.getPassword())
         );
@@ -28,11 +30,10 @@ public class AuthService {
 
         String token = tokenIssuer.issue(principal.getId(), principal.getUsername(), principal.getRole());
 
-        return new TokenResponseDto(token);
+        return new LoginResponseDto(token);
     }
 
     public boolean registerUser(RegisterDto registerDto) {
-        //TODO
 
         return false;
     }

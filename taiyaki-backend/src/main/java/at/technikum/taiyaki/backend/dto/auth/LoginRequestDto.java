@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TokenRequestDto {
+public class LoginRequestDto {
 
     @NotBlank
     private String identifier;
