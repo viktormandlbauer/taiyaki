@@ -5,12 +5,7 @@ import at.technikum.taiyaki.backend.dto.auth.RegisterDto;
 import at.technikum.taiyaki.backend.entity.User;
 import org.mapstruct.Mapper;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface UserMapper {
-    UserDto toDto(User user);
-    User toEntity(UserDto userDto);
-    List<UserDto> toDto(List<User> entity);
-    List<User> toEntity(List <User> dto);
+public interface RegistrationMapper {
+    User toEntity(RegisterDto registerDto);
 }

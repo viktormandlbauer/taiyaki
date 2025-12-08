@@ -1,7 +1,5 @@
 package at.technikum.taiyaki.backend.dto.auth;
 
-import at.technikum.taiyaki.backend.dto.AddressDto;
-import at.technikum.taiyaki.backend.dto.UserDto;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,11 +10,11 @@ public class RegisterDto {
 
     @NotBlank
     @Size(max = 50)
-    private String firstname;
+    private String firstName;
 
     @NotBlank
     @Size(max = 50)
-    private String lastname;
+    private String lastName;
 
     @NotBlank
     @Size(max = 30)
