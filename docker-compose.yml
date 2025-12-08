@@ -11,6 +11,7 @@ services:
       DB_URL: "jdbc:mysql://localhost:3306/taiyaki_database"
       DB_USERNAME: taiyaki_user
       DB_PASSWORD: taiyaki_password
+      JWT_SECRET: your_jwt_secret_key
       JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75.0 -XX:+UseContainerSupport"
     depends_on:
       - mysql

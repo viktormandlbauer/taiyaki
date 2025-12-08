@@ -41,14 +41,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     // Authentication logging
                     if (logger.isDebugEnabled() && authentication.getPrincipal() instanceof UserPrincipal p) {
-                        logger.debug("Authenticated {} {} as userId={}, username={}",
+                        logger.debug("Authenticated {} {} as userId={}, username={}, roles={}",
                                 request.getMethod(),
                                 request.getRequestURI(),
                                 p.getId(),
-                                p.getUsername());
+                                p.getUsername(),
+                                p.getRole());
                     }
                 });
-
         filterChain.doFilter(request, response);
     }
 
