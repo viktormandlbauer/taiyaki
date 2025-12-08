@@ -14,6 +14,7 @@ import at.technikum.taiyaki.backend.repository.ProductRepository;
 import at.technikum.taiyaki.backend.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final ReviewRepository reviewRepository;
@@ -32,21 +34,11 @@ public class ProductService {
     private final FlavourMapper flavourMapper;
 
 
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper, ReviewRepository reviewRepository, FlavourRepository flavourRepository, ReviewMapper reviewMapper, FlavourMapper flavourMapper) {
-        this.productRepository = productRepository;
-        this.productMapper = productMapper;
-        this.reviewRepository = reviewRepository;
-        this.flavourRepository = flavourRepository;
-        this.reviewMapper = reviewMapper;
-        this.flavourMapper = flavourMapper;
-    }
-
     public List<ProductDto> getAll() {
         return productMapper.toDto(productRepository.findAll());
     }
 
     public ProductDto createProduct(@Valid ProductDto productDto) {
-        //return productMapper.toDto(productRepository.save(productMapper.toEntity(productDto)));
 
         Flavour flavour = flavourRepository.findFlavourByName(productDto.getFlavour());
         Product product = new Product(productDto.getName(), productDto.getDescription(), productDto.getPrice(), flavour);

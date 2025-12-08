@@ -1,7 +1,6 @@
 package at.technikum.taiyaki.backend.dto.order;
 
 import at.technikum.taiyaki.backend.dto.AddressDto;
-import at.technikum.taiyaki.backend.entity.OrderProduct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

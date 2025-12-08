@@ -1,23 +1,21 @@
 package at.technikum.taiyaki.backend.controller;
 
 import at.technikum.taiyaki.backend.dto.UserDto;
-import at.technikum.taiyaki.backend.entity.User;
 import at.technikum.taiyaki.backend.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping
     public List<UserDto> getAllUsers(){
@@ -25,21 +23,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasPermission(#id, T(at.technikum.taiyaki.backend.entity.User).getName(),'read')")
     public UserDto getUserById(@PathVariable UUID id) {
         return userService.getUserById(id).orElse(null);
     }
-
-    /* TODO: Fixing
-    @GetMapping("/{username}")
-    public Users getUserByUsername(@PathVariable String username) {
-        return userService.getUserByUsername(username);
-    }
-
-    @GetMapping("/{email}")
-    public Users getUserByEmail(@PathVariable String email) {
-        return userService.getUserByEmail(email);
-    }
-    */
 
     @DeleteMapping("/{id}")
     public Boolean deleteUser(@PathVariable UUID id){
@@ -49,6 +36,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasPermission(#id, T(at.technikum.taiyaki.backend.entity.User).getName(),'update')")
     public Boolean updateUser(@PathVariable UUID id, @RequestBody @Valid UserDto userDto){
         userService.updateUser(id, userDto);
         return true;

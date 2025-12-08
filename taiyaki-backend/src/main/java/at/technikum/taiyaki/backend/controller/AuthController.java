@@ -1,35 +1,46 @@
 package at.technikum.taiyaki.backend.controller;
 
-import at.technikum.taiyaki.backend.dto.auth.LoginRequestDto;
+import at.technikum.taiyaki.backend.dto.auth.AuthRequestDto;
 import at.technikum.taiyaki.backend.dto.auth.RegisterDto;
-import at.technikum.taiyaki.backend.dto.auth.LoginResponseDto;
+import at.technikum.taiyaki.backend.dto.auth.TokenResponseDto;
 import at.technikum.taiyaki.backend.service.AuthService;
-import at.technikum.taiyaki.backend.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService authService;
-    private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    public AuthController(AuthService authService, UserService userService) {
-        this.authService = authService;
-        this.userService = userService;
-    }
+    private final AuthService authService;
 
     @PostMapping("/register")
-    public boolean register(@RequestBody RegisterDto registerDto) {
-        return userService.createUser(registerDto);
+    public ResponseEntity<Map<String, Object>> register(@RequestBody @Valid RegisterDto registerDto) {
+
+        logger.debug(registerDto.toString());
+
+        return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "token", authService.register(registerDto).getToken()
+        ));
     }
 
     @PostMapping("/login")
-    public LoginResponseDto token (@RequestBody @Valid final LoginRequestDto loginRequestDto){
-        return authService.authenticate(loginRequestDto);
-     }
+    public ResponseEntity<Map<String, Object>> login(@RequestBody @Valid AuthRequestDto authRequestDto) {
+
+        logger.debug(authRequestDto.toString());
+
+        return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "token", authService.authenticate(authRequestDto)
+        ));
+    }
 }

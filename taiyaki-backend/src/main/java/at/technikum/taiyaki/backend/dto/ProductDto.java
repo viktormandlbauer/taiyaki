@@ -1,7 +1,6 @@
 package at.technikum.taiyaki.backend.dto;
 
 import at.technikum.taiyaki.backend.entity.Flavour;
-import at.technikum.taiyaki.backend.entity.Product;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
