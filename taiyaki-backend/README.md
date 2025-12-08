@@ -10,6 +10,7 @@
   * /swagger.html (Swagger API UI)
 
 ## Setup
+### Set up Docker
 Build Docker container
 ```shell
 docker compose build
@@ -26,4 +27,12 @@ docker compose stop
 Remove Docker container
 ```shell
 docker compose down
+```
+
+### Create and embed .ENV-file to the project
+```shell
+DB_URL=jdbc:mysql://localhost:3306/taiyaki_database
+DB_USERNAME=taiyaki_user
+DB_PASSWORD=taiyaki_password
+JWT_SECRET=your_jwt_secret_key
 ```
