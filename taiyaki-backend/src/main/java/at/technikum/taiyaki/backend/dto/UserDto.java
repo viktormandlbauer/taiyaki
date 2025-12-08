@@ -1,6 +1,5 @@
 package at.technikum.taiyaki.backend.dto;
 
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

@@ -7,6 +7,7 @@ import at.technikum.taiyaki.backend.mappers.RegistrationMapper;
 import at.technikum.taiyaki.backend.mappers.UserMapper;
 import at.technikum.taiyaki.backend.repository.UserRepository;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +16,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RegistrationMapper registrationMapper;
 
-    public UserService(
-            UserRepository userRepository,
-            UserMapper userMapper,
-            PasswordEncoder passwordEncoder,
-            RegistrationMapper registerMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.registrationMapper = registerMapper;
-    }
 
     public List<UserDto> getUsers(){
         return userMapper.toDto(userRepository.findAll());
@@ -39,16 +31,6 @@ public class UserService {
     public Optional<UserDto> getUserById(UUID id){
         return userRepository.findById(id).map(userMapper::toDto);
     }
-
-    /* TODO: Fixing
-    public Users getUserByUsername(String username){
-        return userRepository.findByUsername(username);
-    }
-
-    public Users getUserByEmail(String email){
-        return userRepository.findByEmail(email);
-    }
-    */
 
     public boolean createUser(RegisterDto registerDto){
         User user = registrationMapper.toEntity(registerDto);

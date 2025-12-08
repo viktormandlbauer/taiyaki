@@ -9,22 +9,21 @@ import at.technikum.taiyaki.backend.entity.Order;
 import at.technikum.taiyaki.backend.entity.OrderProduct;
 import at.technikum.taiyaki.backend.entity.Product;
 import at.technikum.taiyaki.backend.mappers.OrderMapper;
-import at.technikum.taiyaki.backend.mappers.OrderProductMapper;
 import at.technikum.taiyaki.backend.mappers.ProductMapper;
 import at.technikum.taiyaki.backend.repository.OrderProductRepository;
 import at.technikum.taiyaki.backend.repository.OrderRepository;
 import at.technikum.taiyaki.backend.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -32,14 +31,6 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderProductRepository orderProductRepository;
     private final ProductMapper productMapper;
-
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ProductRepository productRepository, OrderProductRepository orderProductRepository, ProductMapper productMapper) {
-        this.orderRepository = orderRepository;
-        this.ordersMapper = orderMapper;
-        this.productRepository = productRepository;
-        this.orderProductRepository = orderProductRepository;
-        this.productMapper = productMapper;
-    }
 
     public List<OrderDto> getAllOrders() {
         return ordersMapper.toDto(orderRepository.findAll());

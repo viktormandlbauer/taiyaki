@@ -7,6 +7,7 @@ import at.technikum.taiyaki.backend.entity.Review;
 import at.technikum.taiyaki.backend.mappers.ProductMapper;
 import at.technikum.taiyaki.backend.service.ProductService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/products")
 public class ProductController {
     private final ProductService productService;
-
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
-
-    // Mapping for products
 
     @GetMapping
     public List<ProductDto> getAllProducts(){

@@ -16,12 +16,4 @@ public class FlavourDto {
     @NotBlank
     private String name;
 
-    public FlavourDto(UUID  id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public FlavourDto(String name) {
-        this.name = name;
-    }
 }
