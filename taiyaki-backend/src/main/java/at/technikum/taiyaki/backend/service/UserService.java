@@ -3,6 +3,7 @@ package at.technikum.taiyaki.backend.service;
 import at.technikum.taiyaki.backend.dto.UserDto;
 import at.technikum.taiyaki.backend.dto.auth.RegisterDto;
 import at.technikum.taiyaki.backend.entity.User;
+import at.technikum.taiyaki.backend.exceptions.RegistrationException;
 import at.technikum.taiyaki.backend.mappers.RegistrationMapper;
 import at.technikum.taiyaki.backend.mappers.UserMapper;
 import at.technikum.taiyaki.backend.repository.UserRepository;
@@ -35,8 +36,8 @@ public class UserService {
     public boolean createUser(RegisterDto registerDto){
         User user = registrationMapper.toEntity(registerDto);
 
-        if(userRepository.findByEmail(registerDto.getEmail()) != null) return false;
-        if(userRepository.findByUsername(registerDto.getUsername()) != null) return false;
+        if(userRepository.findByEmail(registerDto.getEmail()) != null) throw new RegistrationException("Email already exists");
+        if(userRepository.findByUsername(registerDto.getUsername()) != null) throw new RegistrationException("Username already exists");
 
         String hashedPassword = passwordEncoder.encode(registerDto.getPassword());
         user.setPassword(hashedPassword);

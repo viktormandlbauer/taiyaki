@@ -40,7 +40,6 @@ public class AuthService {
         return new TokenResponseDto(token);
     }
 
-
     public TokenResponseDto register(RegisterDto registerDto) throws RegistrationException {
 
         User user = registrationMapper.toEntity(registerDto);
