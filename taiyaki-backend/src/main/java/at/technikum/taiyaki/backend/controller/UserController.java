@@ -18,6 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<UserDto> getAllUsers(){
         return userService.getUsers();
     }
@@ -36,7 +37,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasPermission(#id, T(at.technikum.taiyaki.backend.entity.User).getName(),'update')")
+    @PreAuthorize("hasPermission(#id, T(at.technikum.taiyaki.backend.entity.User).getName(),'write')")
     public Boolean updateUser(@PathVariable UUID id, @RequestBody @Valid UserDto userDto){
         userService.updateUser(id, userDto);
         return true;

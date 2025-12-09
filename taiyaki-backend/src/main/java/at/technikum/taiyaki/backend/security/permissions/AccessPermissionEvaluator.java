@@ -12,6 +12,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class AccessPermissionEvaluator implements PermissionEvaluator {
+
     private final List<AccessPermission> accessPermissions;
 
     @Override

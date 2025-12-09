@@ -22,5 +22,4 @@ public class UserPrincipalAuthenticationToken extends AbstractAuthenticationToke
     public Object getPrincipal() {
         return principal;
     }
-
 }

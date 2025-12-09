@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableJpaAuditing
 @SpringBootApplication
 public class TaiyakiBackendApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(TaiyakiBackendApplication.class, args);
     }
-
 }
