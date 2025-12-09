@@ -10,6 +10,7 @@ import at.technikum.taiyaki.backend.repository.UserRepository;
 import at.technikum.taiyaki.backend.security.UserPrincipal;
 import at.technikum.taiyaki.backend.security.jwt.TokenIssuer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private final TokenIssuer tokenIssuer;
 
     private final AuthenticationManager authenticationManager;
@@ -39,7 +41,6 @@ public class AuthService {
 
         return new TokenResponseDto(token);
     }
-
 
     public TokenResponseDto register(RegisterDto registerDto) throws RegistrationException {
 
