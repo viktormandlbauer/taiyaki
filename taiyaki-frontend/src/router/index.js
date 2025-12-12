@@ -6,16 +6,7 @@ const routes = [
     name: 'home',
     component: () => import('@/assets/pages/HomeView.vue'),
   },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/assets/pages/auth/LoginView.vue'),
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: () => import('@/assets/pages/auth/RegisterView.vue'),
-  },
+
   {
     path: '/products',
     name: 'products',

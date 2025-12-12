@@ -43,9 +43,11 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import { login, register } from "@/api/auth";
+
 import LoginForm from "@/components/auth/LoginForm.vue";
 import RegisterForm from "@/components/auth/RegisterForm.vue";
-import AuthTabs from '@/components/auth/AuthTabs.vue'
+import AuthTabs from "@/components/auth/AuthTabs.vue";
 
 const props = defineProps({
   visible: { type: Boolean, default: false },
@@ -75,31 +77,44 @@ watch(activeTab, () => {
 
 const close = () => emit("update:visible", false);
 
-// receives already-validated data from LoginForm
-const handleLogin = async ({ email, password }) => {
+const handleLogin = async ({ identifier, password }) => {
   loginError.value = "";
   submitting.value = true;
+
   try {
-    // Demo login – replace with API call
-    if (email === "test@example.com" && password === "password") {
-      emit("auth-success", { mode: "login", email });
-      close();
-    } else {
-      loginError.value = "Invalid email or password.";
-    }
+    const res = await login(identifier, password);
+
+    // common patterns:
+    // 1) backend returns token
+    const token = res.data?.token;
+    if (token) localStorage.setItem("token", token);
+
+    emit("auth-success", { mode: "login", user: res.data?.user, identifier });
+    close();
+  } catch (err) {
+    // show backend message if present
+    loginError.value =
+      err.response?.data?.message ||
+      err.response?.data?.error ||
+      "Login failed. Please try again.";
   } finally {
     submitting.value = false;
   }
 };
 
-// receives already-validated data from RegisterForm
 const handleRegister = async (payload) => {
   registerError.value = "";
   submitting.value = true;
+
   try {
-    // Demo register – replace with API call
-    emit("auth-success", { mode: "register", ...payload });
+    const res = await register(payload);
+    emit("auth-success", { mode: "register", user: res.data?.user, ...payload });
     close();
+  } catch (err) {
+    registerError.value =
+      err.response?.data?.message ||
+      err.response?.data?.error ||
+      "Registration failed. Please try again.";
   } finally {
     submitting.value = false;
   }
