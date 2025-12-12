@@ -1,48 +1,42 @@
-<!-- src/components/auth/RegisterForm.vue -->
 <template>
   <form @submit.prevent="onSubmit" novalidate>
-    <!-- Salutation -->
+    <!-- First name -->
     <div class="mb-3">
-      <label for="salutation" class="form-label">Salutation (Anrede)</label>
-      <select
-        id="salutation"
-        class="form-select"
-        v-model="model.salutation"
+      <label for="firstName" class="form-label">First name</label>
+      <input
+        id="firstName"
+        type="text"
+        maxlength="50"
+        class="form-control"
+        v-model.trim="model.firstName"
         :class="{
-          'is-invalid': touched.salutation && errors.salutation,
-          'is-valid': touched.salutation && !errors.salutation && model.salutation
+          'is-invalid': touched.firstName && errors.firstName,
+          'is-valid': touched.firstName && !errors.firstName && model.firstName
         }"
-        @blur="touch('salutation')"
-        @change="touch('salutation')"
-      >
-        <option disabled value="">Select salutation</option>
-        <option value="male">male</option>
-        <option value="female">female</option>
-        <option value="other">other</option>
-      </select>
-      <div v-if="touched.salutation && errors.salutation" class="invalid-feedback">
-        {{ errors.salutation }}
+        @blur="touch('firstName')"
+      />
+      <div v-if="touched.firstName && errors.firstName" class="invalid-feedback">
+        {{ errors.firstName }}
       </div>
     </div>
 
-    <!-- Salutation other -->
-    <div v-if="model.salutation === 'other'" class="mb-3">
-      <label for="salutationOther" class="form-label">Please specify</label>
+    <!-- Last name -->
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Last name</label>
       <input
-        id="salutationOther"
+        id="lastName"
         type="text"
-        maxlength="30"
+        maxlength="50"
         class="form-control"
-        v-model.trim="model.salutationOther"
+        v-model.trim="model.lastName"
         :class="{
-          'is-invalid': touched.salutationOther && errors.salutationOther,
-          'is-valid': touched.salutationOther && !errors.salutationOther && model.salutationOther
+          'is-invalid': touched.lastName && errors.lastName,
+          'is-valid': touched.lastName && !errors.lastName && model.lastName
         }"
-        @blur="touch('salutationOther')"
+        @blur="touch('lastName')"
       />
-      <div class="form-text">Max 30 characters</div>
-      <div v-if="touched.salutationOther && errors.salutationOther" class="invalid-feedback">
-        {{ errors.salutationOther }}
+      <div v-if="touched.lastName && errors.lastName" class="invalid-feedback">
+        {{ errors.lastName }}
       </div>
     </div>
 
@@ -52,6 +46,7 @@
       <input
         id="registerEmail"
         type="email"
+        maxlength="100"
         class="form-control"
         v-model.trim="model.email"
         :class="{
@@ -71,6 +66,7 @@
       <input
         id="registerUsername"
         type="text"
+        maxlength="30"
         class="form-control"
         v-model.trim="model.username"
         :class="{
@@ -90,6 +86,7 @@
       <input
         id="registerPassword"
         type="password"
+        maxlength="100"
         class="form-control"
         v-model="model.password"
         :class="{
@@ -101,10 +98,10 @@
       <div v-if="touched.password && errors.password" class="invalid-feedback">
         {{ errors.password }}
       </div>
-      <div class="form-text">At least 12 characters; must include upper/lowercase, number, and symbol.</div>
+      <div class="form-text">Max 100 characters.</div>
     </div>
 
-    <!-- Repeat -->
+    <!-- Repeat password (client-only) -->
     <div class="mb-3">
       <label for="registerConfirm" class="form-label">Repeat password</label>
       <input
@@ -120,6 +117,66 @@
       />
       <div v-if="touched.passwordRepeat && errors.passwordRepeat" class="invalid-feedback">
         {{ errors.passwordRepeat }}
+      </div>
+    </div>
+
+    <!-- Street -->
+    <div class="mb-3">
+      <label for="street" class="form-label">Street</label>
+      <input
+        id="street"
+        type="text"
+        maxlength="100"
+        class="form-control"
+        v-model.trim="model.street"
+        :class="{
+          'is-invalid': touched.street && errors.street,
+          'is-valid': touched.street && !errors.street && model.street
+        }"
+        @blur="touch('street')"
+      />
+      <div v-if="touched.street && errors.street" class="invalid-feedback">
+        {{ errors.street }}
+      </div>
+    </div>
+
+    <!-- City -->
+    <div class="mb-3">
+      <label for="city" class="form-label">City</label>
+      <input
+        id="city"
+        type="text"
+        maxlength="50"
+        class="form-control"
+        v-model.trim="model.city"
+        :class="{
+          'is-invalid': touched.city && errors.city,
+          'is-valid': touched.city && !errors.city && model.city
+        }"
+        @blur="touch('city')"
+      />
+      <div v-if="touched.city && errors.city" class="invalid-feedback">
+        {{ errors.city }}
+      </div>
+    </div>
+
+    <!-- Postal code -->
+    <div class="mb-3">
+      <label for="postalCode" class="form-label">Postal code</label>
+      <input
+        id="postalCode"
+        type="text"
+        maxlength="10"
+        class="form-control"
+        v-model.trim="model.postalCode"
+        :class="{
+          'is-invalid': touched.postalCode && errors.postalCode,
+          'is-valid': touched.postalCode && !errors.postalCode && model.postalCode
+        }"
+        @blur="touch('postalCode')"
+      />
+      <div v-if="touched.postalCode && errors.postalCode" class="invalid-feedback">
+        {{ errors.postalCode }}
       </div>
     </div>
 
@@ -151,6 +208,7 @@
           </option>
         </optgroup>
       </select>
+
       <div v-if="touched.country && errors.country" class="invalid-feedback">
         {{ errors.country }}
       </div>
@@ -172,35 +230,40 @@ import * as yup from "yup";
 
 import isoCountries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
-
 isoCountries.registerLocale(enLocale);
 
 const props = defineProps({
   loading: { type: Boolean, default: false },
-  apiError: { type: String, default: "" }, // from parent
+  apiError: { type: String, default: "" },
   initial: {
     type: Object,
     default: () => ({
-      salutation: "",
-      salutationOther: "",
-      email: "",
+      firstName: "",
+      lastName: "",
       username: "",
       password: "",
       passwordRepeat: "",
+      email: "",
+      street: "",
+      city: "",
+      postalCode: "",
       country: "",
     }),
   },
 });
 
-const emit = defineEmits(["submit"]); // emits valid payload
+const emit = defineEmits(["submit"]);
 
 const model = reactive({
-  salutation: props.initial.salutation ?? "",
-  salutationOther: props.initial.salutationOther ?? "",
-  email: props.initial.email ?? "",
+  firstName: props.initial.firstName ?? "",
+  lastName: props.initial.lastName ?? "",
   username: props.initial.username ?? "",
   password: props.initial.password ?? "",
   passwordRepeat: props.initial.passwordRepeat ?? "",
+  email: props.initial.email ?? "",
+  street: props.initial.street ?? "",
+  city: props.initial.city ?? "",
+  postalCode: props.initial.postalCode ?? "",
   country: props.initial.country ?? "",
 });
 
@@ -219,56 +282,53 @@ const dachCountries = computed(() => {
 const otherCountries = computed(() => countryList.value.filter((c) => !DACH.includes(c.code)));
 
 const errors = reactive({
-  salutation: "",
-  salutationOther: "",
-  email: "",
+  firstName: "",
+  lastName: "",
   username: "",
   password: "",
   passwordRepeat: "",
+  email: "",
+  street: "",
+  city: "",
+  postalCode: "",
   country: "",
 });
 
 const touched = reactive({
-  salutation: false,
-  salutationOther: false,
-  email: false,
+  firstName: false,
+  lastName: false,
   username: false,
   password: false,
   passwordRepeat: false,
+  email: false,
+  street: false,
+  city: false,
+  postalCode: false,
   country: false,
 });
 
 const schema = yup.object({
-  salutation: yup
-    .string()
-    .oneOf(["male", "female", "other"], "Please select a valid salutation.")
-    .required("Please select a salutation."),
-  salutationOther: yup
-    .string()
-    .trim()
-    .max(30, "Please keep this under 30 characters.")
-    .when("salutation", {
-      is: "other",
-      then: (s) => s.required("Please specify your salutation (max 30 characters)."),
-      otherwise: (s) => s.notRequired(),
-    }),
-  email: yup.string().trim().required("Email is required.").email("Please enter a valid email address."),
-  username: yup.string().trim().required("Username is required."),
-  password: yup
-    .string()
-    .required("Password is required.")
-    .min(12, "Password must be at least 12 characters long.")
-    .matches(/[A-Z]/, "Password must include at least one uppercase letter.")
-    .matches(/[a-z]/, "Password must include at least one lowercase letter.")
-    .matches(/[0-9]/, "Password must include at least one number.")
-    .matches(/[^A-Za-z0-9]/, "Password must include at least one symbol."),
+  firstName: yup.string().trim().required("First name is required.").max(50, "Max 50 characters."),
+  lastName: yup.string().trim().required("Last name is required.").max(50, "Max 50 characters."),
+  username: yup.string().trim().required("Username is required.").max(30, "Max 30 characters."),
+  password: yup.string().required("Password is required.").max(100, "Max 100 characters."),
   passwordRepeat: yup
     .string()
     .required("Please repeat your password.")
     .oneOf([yup.ref("password")], "Passwords do not match."),
+  email: yup
+    .string()
+    .trim()
+    .required("Email is required.")
+    .email("Please enter a valid email address.")
+    .max(100, "Max 100 characters."),
+  street: yup.string().trim().required("Street is required.").max(100, "Max 100 characters."),
+  city: yup.string().trim().required("City is required.").max(50, "Max 50 characters."),
+  postalCode: yup.string().trim().required("Postal code is required.").max(10, "Max 10 characters."),
   country: yup
     .string()
     .required("Please select a country.")
+    .max(50, "Max 50 characters.")
     .test("is-known-country", "Please select a valid country.", (code) => !!code && isoCountries.isValid(code)),
 });
 
@@ -301,18 +361,6 @@ async function validateAll() {
   }
 }
 
-// keep conditional field clean
-watch(
-  () => model.salutation,
-  (val) => {
-    if (val !== "other") {
-      model.salutationOther = "";
-      errors.salutationOther = "";
-      touched.salutationOther = false;
-    }
-  }
-);
-
 // revalidate confirm if password changes and confirm already touched
 watch(
   () => model.password,
@@ -323,10 +371,20 @@ watch(
 
 async function onSubmit() {
   Object.keys(touched).forEach((k) => (touched[k] = true));
-
   const ok = await validateAll();
   if (!ok) return;
 
-  emit("submit", { ...model, salutationOther: model.salutation === "other" ? model.salutationOther : "" });
+  // IMPORTANT: emit DTO-shaped payload (no passwordRepeat)
+  emit("submit", {
+    firstName: model.firstName,
+    lastName: model.lastName,
+    username: model.username,
+    password: model.password,
+    email: model.email,
+    street: model.street,
+    city: model.city,
+    postalCode: model.postalCode,
+    country: model.country,
+  });
 }
 </script>

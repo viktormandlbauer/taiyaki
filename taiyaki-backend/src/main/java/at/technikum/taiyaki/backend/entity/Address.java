@@ -21,13 +21,13 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String street;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String city;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String postalCode;
 
     @Column(nullable = false)

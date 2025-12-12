@@ -271,78 +271,144 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { usersApi } from "@/api/users";
 
 // tabs
 const activeTab = ref("details");
 
-// personal details
-const firstName = ref("Tania");
-const lastName = ref("Example");
-const email = ref("tania@example.com");
-const phone = ref("+49 30 123456");
-const street = ref("Sakura Street 18");
-const zip = ref("10243");
-const city = ref("Berlin");
-const country = ref("Germany");
+// loading + errors
+const loadingProfile = ref(false);
+const savingProfile = ref(false);
+const changingPw = ref(false);
 
-const savePersonalDetails = () => {
-  console.log("Saving personal details", {
-    firstName: firstName.value,
-    lastName: lastName.value,
-    email: email.value,
-    phone: phone.value,
-    street: street.value,
-    zip: zip.value,
-    city: city.value,
-    country: country.value,
-  });
-  alert("Personal details updated (demo).");
-};
+const profileError = ref("");
+const profileSuccess = ref("");
 
-// payment methods (dummy data)
+// personal details (bind to inputs)
+const firstName = ref("");
+const lastName = ref("");
+const email = ref("");
+const phone = ref("");
+const street = ref("");
+const zip = ref("");
+const city = ref("");
+const country = ref("");
+
+// payment methods (still dummy unless you have endpoints)
 const cardBrand = ref("Visa");
 const cardLast4 = ref("1234");
 const cardExpiry = ref("08/28");
-
 const cardName = ref("");
 const cardNumber = ref("");
 const newCardExpiry = ref("");
 const newCardCvc = ref("");
 
-const savePaymentMethod = () => {
-  console.log("Saving payment method", {
-    cardName: cardName.value,
-    cardNumber: cardNumber.value,
-    newCardExpiry: newCardExpiry.value,
-    newCardCvc: newCardCvc.value,
-  });
-  alert("Payment method saved (demo).");
+// password change
+const currentPassword = ref("");
+const newPassword = ref("");
+const confirmPassword = ref("");
+
+function setMsg(err = "", ok = "") {
+  profileError.value = err;
+  profileSuccess.value = ok;
+}
+
+async function loadProfile() {
+  setMsg("", "");
+  loadingProfile.value = true;
+  try {
+    const { data } = await usersApi.me();
+
+    // Map backend fields -> form fields (adjust names to your backend response)
+    firstName.value = data.firstName ?? "";
+    lastName.value = data.lastName ?? "";
+    email.value = data.email ?? "";
+    phone.value = data.phone ?? "";
+    street.value = data.street ?? "";
+    zip.value = data.postalCode ?? data.zip ?? "";
+    city.value = data.city ?? "";
+    country.value = data.country ?? "";
+  } catch (err) {
+    setMsg(
+      err.response?.data?.message || "Could not load profile. Are you logged in?",
+      ""
+    );
+  } finally {
+    loadingProfile.value = false;
+  }
+}
+
+onMounted(loadProfile);
+
+const savePersonalDetails = async () => {
+  setMsg("", "");
+  savingProfile.value = true;
+
+  try {
+    // Send DTO-shaped update. Include only fields your backend allows to update.
+    const payload = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      phone: phone.value,          // only if backend supports it
+      street: street.value,
+      postalCode: zip.value,       // backend DTO uses postalCode
+      city: city.value,
+      country: country.value,
+    };
+
+    const { data } = await usersApi.updateMe(payload);
+
+    // optionally re-sync with returned data
+    firstName.value = data.firstName ?? firstName.value;
+    lastName.value = data.lastName ?? lastName.value;
+    email.value = data.email ?? email.value;
+
+    setMsg("", "Personal details saved.");
+  } catch (err) {
+    setMsg(err.response?.data?.message || "Saving failed.", "");
+  } finally {
+    savingProfile.value = false;
+  }
 };
 
+const changePassword = async () => {
+  setMsg("", "");
+
+  if (newPassword.value !== confirmPassword.value) {
+    setMsg("New password and confirmation do not match.", "");
+    return;
+  }
+
+  changingPw.value = true;
+  try {
+    await usersApi.changePassword({
+      currentPassword: currentPassword.value,
+      newPassword: newPassword.value,
+    });
+
+    currentPassword.value = "";
+    newPassword.value = "";
+    confirmPassword.value = "";
+
+    setMsg("", "Password updated.");
+  } catch (err) {
+    setMsg(err.response?.data?.message || "Password update failed.", "");
+  } finally {
+    changingPw.value = false;
+  }
+};
+
+// keep your payment dummy handlers as-is for now
+const savePaymentMethod = () => alert("Payment method saved (demo).");
 const clearPaymentMethod = () => {
   cardBrand.value = "No card on file";
   cardLast4.value = "----";
   cardExpiry.value = "--/--";
 };
-
-// password change (demo only)
-const currentPassword = ref("");
-const newPassword = ref("");
-const confirmPassword = ref("");
-
-const changePassword = () => {
-  if (newPassword.value !== confirmPassword.value) {
-    alert("New password and confirmation do not match.");
-    return;
-  }
-  console.log("Changing password", {
-    currentPassword: currentPassword.value,
-    newPassword: newPassword.value,
-  });
-  alert("Password updated (demo).");
-};
 </script>
+
 
 <style scoped>
 .profile-card {

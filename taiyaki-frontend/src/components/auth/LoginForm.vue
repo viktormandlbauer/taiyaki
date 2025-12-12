@@ -1,22 +1,23 @@
-<!-- src/components/auth/LoginForm.vue -->
 <template>
   <form @submit.prevent="onSubmit" novalidate>
     <div class="mb-3">
-      <label for="loginEmail" class="form-label">Email address</label>
+      <label for="loginIdentifier" class="form-label">Email or username</label>
       <input
-        id="loginEmail"
-        type="email"
+        id="loginIdentifier"
+        type="text"
         class="form-control"
-        v-model.trim="model.email"
+        v-model.trim="model.identifier"
         :class="{
-          'is-invalid': touched.email && errors.email,
-          'is-valid': touched.email && !errors.email && model.email
+          'is-invalid': touched.identifier && errors.identifier,
+          'is-valid': touched.identifier && !errors.identifier && model.identifier
         }"
-        @blur="touch('email')"
+        @blur="touch('identifier')"
+        autocomplete="username"
       />
-      <div v-if="touched.email && errors.email" class="invalid-feedback">
-        {{ errors.email }}
+      <div v-if="touched.identifier && errors.identifier" class="invalid-feedback">
+        {{ errors.identifier }}
       </div>
+      <div class="form-text">You can sign in using your email address or username.</div>
     </div>
 
     <div class="mb-3">
@@ -31,6 +32,7 @@
           'is-valid': touched.password && !errors.password && model.password
         }"
         @blur="touch('password')"
+        autocomplete="current-password"
       />
       <div v-if="touched.password && errors.password" class="invalid-feedback">
         {{ errors.password }}
@@ -53,25 +55,29 @@ import * as yup from "yup";
 
 const props = defineProps({
   loading: { type: Boolean, default: false },
-  apiError: { type: String, default: "" }, // error coming from parent (API/auth)
+  apiError: { type: String, default: "" },
   initial: {
     type: Object,
-    default: () => ({ email: "", password: "" }),
+    default: () => ({ identifier: "", password: "" }),
   },
 });
 
-const emit = defineEmits(["submit"]); // emits valid {email, password}
+const emit = defineEmits(["submit"]); // emits valid {identifier, password}
 
 const model = reactive({
-  email: props.initial.email ?? "",
+  identifier: props.initial.identifier ?? "",
   password: props.initial.password ?? "",
 });
 
-const errors = reactive({ email: "", password: "" });
-const touched = reactive({ email: false, password: false });
+const errors = reactive({ identifier: "", password: "" });
+const touched = reactive({ identifier: false, password: false });
 
 const schema = yup.object({
-  email: yup.string().trim().required("Email is required.").email("Please enter a valid email address."),
+  identifier: yup
+    .string()
+    .trim()
+    .required("Email or username is required.")
+    .max(100, "Please keep this under 100 characters."),
   password: yup.string().required("Password is required."),
 });
 
@@ -90,7 +96,7 @@ async function validateField(field) {
 }
 
 async function validateAll() {
-  errors.email = "";
+  errors.identifier = "";
   errors.password = "";
   try {
     await schema.validate(model, { abortEarly: false });
@@ -106,12 +112,12 @@ async function validateAll() {
 }
 
 async function onSubmit() {
-  touched.email = true;
+  touched.identifier = true;
   touched.password = true;
 
   const ok = await validateAll();
   if (!ok) return;
 
-  emit("submit", { email: model.email, password: model.password });
+  emit("submit", { identifier: model.identifier, password: model.password });
 }
 </script>
