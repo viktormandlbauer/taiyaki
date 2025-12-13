@@ -41,7 +41,7 @@ public class AuthController {
 
         return ResponseEntity.ok(Map.of(
                 "status", "success",
-                "token", authService.authenticate(authRequestDto)
+                "token", authService.authenticate(authRequestDto).getToken()
         ));
     }
 }

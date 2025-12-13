@@ -21,6 +21,10 @@ public class RegisterDto {
     private String lastName;
 
     @NotBlank
+    @Size(max = 20)
+    private String salutation;
+
+    @NotBlank
     @Size(max = 30)
     private String username;
 
