@@ -1,11 +1,15 @@
 package at.technikum.taiyaki.backend.service;
 
+import at.technikum.taiyaki.backend.dto.AddressDto;
 import at.technikum.taiyaki.backend.dto.auth.RegisterDto;
 import at.technikum.taiyaki.backend.dto.auth.AuthRequestDto;
 import at.technikum.taiyaki.backend.dto.auth.TokenResponseDto;
+import at.technikum.taiyaki.backend.entity.Address;
 import at.technikum.taiyaki.backend.entity.User;
 import at.technikum.taiyaki.backend.exceptions.RegistrationException;
+import at.technikum.taiyaki.backend.mappers.AddressMapper;
 import at.technikum.taiyaki.backend.mappers.RegistrationMapper;
+import at.technikum.taiyaki.backend.repository.AddressRepository;
 import at.technikum.taiyaki.backend.repository.UserRepository;
 import at.technikum.taiyaki.backend.security.UserPrincipal;
 import at.technikum.taiyaki.backend.security.jwt.TokenIssuer;
@@ -23,12 +27,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final TokenIssuer tokenIssuer;
-
     private final AuthenticationManager authenticationManager;
-    private final RegistrationMapper registrationMapper;
-    private final UserRepository userRepository;
+    private final TokenIssuer tokenIssuer;
     private final PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
+
+    private final RegistrationMapper registrationMapper;
+    private final AddressMapper addressMapper;
 
     public TokenResponseDto authenticate(AuthRequestDto authRequest) throws AuthenticationException {
         Authentication authentication = authenticationManager.authenticate(
@@ -53,6 +60,10 @@ public class AuthService {
         user.setPassword(hashedPassword);
         user.setRole("ROLE_USER");
 
+        Address address = addressMapper.toEntity(registerDto);
+        addressRepository.save(address);
+
+        user.setAddress(address);
         userRepository.save(user);
 
         return authenticate(new AuthRequestDto(registerDto.getUsername(), registerDto.getPassword()));
