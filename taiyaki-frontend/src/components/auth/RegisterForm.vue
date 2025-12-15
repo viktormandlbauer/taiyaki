@@ -1,5 +1,54 @@
 <template>
   <form @submit.prevent="onSubmit" novalidate>
+    <!-- Salutation -->
+    <div class="mb-3">
+      <label for="salutation" class="form-label">Salutation (Anrede)</label>
+      <select
+        id="salutation"
+        class="form-select"
+        v-model="model.salutation"
+        :class="{
+          'is-invalid': touched.salutation && errors.salutation,
+          'is-valid': touched.salutation && !errors.salutation && model.salutation
+        }"
+        @blur="touch('salutation')"
+        @change="touch('salutation')"
+      >
+        <option disabled value="">Select salutation</option>
+        <option value="MALE">Male</option>
+        <option value="FEMALE">Female</option>
+        <option value="OTHER">Other</option>
+      </select>
+
+      <div v-if="touched.salutation && errors.salutation" class="invalid-feedback">
+        {{ errors.salutation }}
+      </div>
+    </div>
+
+    <!-- Only shown if OTHER; NOT emitted as separate field -->
+    <div v-if="model.salutation === 'OTHER'" class="mb-3">
+      <label for="salutationOther" class="form-label">Please specify</label>
+      <input
+        id="salutationOther"
+        type="text"
+        maxlength="30"
+        class="form-control"
+        v-model.trim="model.salutationOther"
+        :class="{
+          'is-invalid': touched.salutationOther && errors.salutationOther,
+          'is-valid':
+            touched.salutationOther &&
+            !errors.salutationOther &&
+            model.salutationOther
+        }"
+        @blur="touch('salutationOther')"
+      />
+      <div v-if="touched.salutationOther && errors.salutationOther" class="invalid-feedback">
+        {{ errors.salutationOther }}
+      </div>
+      <div class="form-text">Max 30 characters.</div>
+    </div>
+
     <!-- First name -->
     <div class="mb-3">
       <label for="firstName" class="form-label">First name</label>
@@ -225,12 +274,12 @@
 </template>
 
 <script setup>
-import { computed, reactive, watch } from "vue";
-import * as yup from "yup";
+import { computed, reactive, watch } from "vue"
+import * as yup from "yup"
 
-import isoCountries from "i18n-iso-countries";
-import enLocale from "i18n-iso-countries/langs/en.json";
-isoCountries.registerLocale(enLocale);
+import isoCountries from "i18n-iso-countries"
+import enLocale from "i18n-iso-countries/langs/en.json"
+isoCountries.registerLocale(enLocale)
 
 const props = defineProps({
   loading: { type: Boolean, default: false },
@@ -238,6 +287,9 @@ const props = defineProps({
   initial: {
     type: Object,
     default: () => ({
+      salutation: "",
+      // optional: allow prefill, but it will NOT be emitted separately
+      salutationOther: "",
       firstName: "",
       lastName: "",
       username: "",
@@ -250,11 +302,13 @@ const props = defineProps({
       country: "",
     }),
   },
-});
+})
 
-const emit = defineEmits(["submit"]);
+const emit = defineEmits(["submit"])
 
 const model = reactive({
+  salutation: props.initial.salutation ?? "",
+  salutationOther: props.initial.salutationOther ?? "",
   firstName: props.initial.firstName ?? "",
   lastName: props.initial.lastName ?? "",
   username: props.initial.username ?? "",
@@ -265,23 +319,25 @@ const model = reactive({
   city: props.initial.city ?? "",
   postalCode: props.initial.postalCode ?? "",
   country: props.initial.country ?? "",
-});
+})
 
 // countries
-const DACH = ["DE", "AT", "CH"];
+const DACH = ["DE", "AT", "CH"]
 const countryList = computed(() => {
-  const names = isoCountries.getNames("en", { select: "official" });
+  const names = isoCountries.getNames("en", { select: "official" })
   return Object.entries(names)
     .map(([code, name]) => ({ code, name }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-});
+    .sort((a, b) => a.name.localeCompare(b.name))
+})
 const dachCountries = computed(() => {
-  const map = new Map(countryList.value.map((c) => [c.code, c.name]));
-  return DACH.filter((code) => map.has(code)).map((code) => ({ code, name: map.get(code) }));
-});
-const otherCountries = computed(() => countryList.value.filter((c) => !DACH.includes(c.code)));
+  const map = new Map(countryList.value.map((c) => [c.code, c.name]))
+  return DACH.filter((code) => map.has(code)).map((code) => ({ code, name: map.get(code) }))
+})
+const otherCountries = computed(() => countryList.value.filter((c) => !DACH.includes(c.code)))
 
 const errors = reactive({
+  salutation: "",
+  salutationOther: "",
   firstName: "",
   lastName: "",
   username: "",
@@ -292,9 +348,11 @@ const errors = reactive({
   city: "",
   postalCode: "",
   country: "",
-});
+})
 
 const touched = reactive({
+  salutation: false,
+  salutationOther: false,
   firstName: false,
   lastName: false,
   username: false,
@@ -305,9 +363,24 @@ const touched = reactive({
   city: false,
   postalCode: false,
   country: false,
-});
+})
 
 const schema = yup.object({
+  salutation: yup
+    .string()
+    .required("Please select a salutation.")
+    .oneOf(["MALE", "FEMALE", "OTHER"], "Please select a valid salutation."),
+
+  salutationOther: yup
+    .string()
+    .trim()
+    .max(30, "Max 30 characters.")
+    .when("salutation", {
+      is: "OTHER",
+      then: (s) => s.required("Please specify your salutation."),
+      otherwise: (s) => s.transform(() => "").notRequired(),
+    }),
+
   firstName: yup.string().trim().required("First name is required.").max(50, "Max 50 characters."),
   lastName: yup.string().trim().required("Last name is required.").max(50, "Max 50 characters."),
   username: yup.string().trim().required("Username is required.").max(30, "Max 30 characters."),
@@ -330,34 +403,34 @@ const schema = yup.object({
     .required("Please select a country.")
     .max(50, "Max 50 characters.")
     .test("is-known-country", "Please select a valid country.", (code) => !!code && isoCountries.isValid(code)),
-});
+})
 
 function touch(field) {
-  touched[field] = true;
-  validateField(field);
+  touched[field] = true
+  validateField(field)
 }
 
 async function validateField(field) {
-  errors[field] = "";
+  errors[field] = ""
   try {
-    await schema.validateAt(field, model);
+    await schema.validateAt(field, model)
   } catch (e) {
-    errors[field] = e.message || "Invalid value.";
+    errors[field] = e.message || "Invalid value."
   }
 }
 
 async function validateAll() {
-  Object.keys(errors).forEach((k) => (errors[k] = ""));
+  Object.keys(errors).forEach((k) => (errors[k] = ""))
   try {
-    await schema.validate(model, { abortEarly: false });
-    return true;
+    await schema.validate(model, { abortEarly: false })
+    return true
   } catch (e) {
     if (e?.inner?.length) {
       for (const err of e.inner) {
-        if (err.path && !errors[err.path]) errors[err.path] = err.message;
+        if (err.path && !errors[err.path]) errors[err.path] = err.message
       }
     }
-    return false;
+    return false
   }
 }
 
@@ -365,17 +438,30 @@ async function validateAll() {
 watch(
   () => model.password,
   () => {
-    if (touched.passwordRepeat) validateField("passwordRepeat");
+    if (touched.passwordRepeat) validateField("passwordRepeat")
   }
-);
+)
+
+// clear OTHER text when salutation changes away from OTHER
+watch(
+  () => model.salutation,
+  (v) => {
+    if (v !== "OTHER") {
+      model.salutationOther = ""
+      errors.salutationOther = ""
+      touched.salutationOther = false
+    }
+  }
+)
 
 async function onSubmit() {
-  Object.keys(touched).forEach((k) => (touched[k] = true));
-  const ok = await validateAll();
-  if (!ok) return;
+  Object.keys(touched).forEach((k) => (touched[k] = true))
+  const ok = await validateAll()
+  if (!ok) return
 
-  // IMPORTANT: emit DTO-shaped payload (no passwordRepeat)
+  // Emit ONLY "salutation" (no salutationDetail field)
   emit("submit", {
+    salutation: model.salutation === "OTHER" ? model.salutationOther : model.salutation,
     firstName: model.firstName,
     lastName: model.lastName,
     username: model.username,
@@ -385,6 +471,7 @@ async function onSubmit() {
     city: model.city,
     postalCode: model.postalCode,
     country: model.country,
-  });
+  })
 }
 </script>
+

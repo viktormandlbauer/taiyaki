@@ -1,10 +1,12 @@
-<!-- src/components/Navbar.vue -->
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark taiyaki-navbar mb-4">
+  <nav
+    class="navbar navbar-expand-lg navbar-dark taiyaki-navbar mb-4"
+    :class="isAdmin ? 'taiyaki-navbar--admin' : 'taiyaki-navbar--default'"
+  >
     <div class="container">
       <RouterLink class="navbar-brand" to="/">Taiyaki</RouterLink>
 
-      <!-- Toggler for mobile -->
+      <!-- Mobile toggler -->
       <button
         class="navbar-toggler"
         type="button"
@@ -18,20 +20,16 @@
       </button>
 
       <div class="collapse navbar-collapse show" id="mainNavbar">
-        <!-- Left: nav links -->
+        <!-- Left links -->
         <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/allergies">Allergies</RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/about">About</RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/contact">Contact</RouterLink>
+          <li v-for="item in leftNavItems" :key="item.to" class="nav-item">
+            <RouterLink class="nav-link" :to="item.to">
+              {{ item.label }}
+            </RouterLink>
           </li>
         </ul>
 
-        <!-- Middle: search bar -->
+        <!-- Search -->
         <form class="d-flex me-3" role="search">
           <input
             class="form-control me-2"
@@ -44,19 +42,9 @@
           </button>
         </form>
 
-        <!-- Right: profile + cart icons -->
+        <!-- Right: cart → profile → logout -->
         <div class="d-flex align-items-center gap-3">
-          <!-- Profile icon: opens modal if not logged in -->
-          <button
-            type="button"
-            class="btn p-0 border-0 bg-transparent nav-link"
-            aria-label="Profile"
-            @click="handleProfileClick"
-          >
-            <i class="bi bi-person fs-4"></i>
-          </button>
-
-          <!-- Cart (with badge) -->
+          <!-- Cart (always visible) -->
           <RouterLink
             class="nav-link position-relative p-0"
             to="/cart"
@@ -70,12 +58,32 @@
               <span class="visually-hidden">items in cart</span>
             </span>
           </RouterLink>
+
+          <!-- Profile (always visible) -->
+          <button
+            type="button"
+            class="btn p-0 border-0 bg-transparent nav-link"
+            aria-label="Profile"
+            @click="handleProfileClick"
+          >
+            <i class="bi bi-person fs-4"></i>
+          </button>
+
+          <!-- Logout (only when logged in) -->
+          <button
+            v-if="isLoggedIn"
+            type="button"
+            class="btn p-0 border-0 bg-transparent nav-link"
+            aria-label="Logout"
+            @click="handleLogout"
+          >
+            <i class="bi bi-box-arrow-right fs-4"></i>
+          </button>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- Outsourced auth modal -->
   <AuthModal
     v-model:visible="showAuthModal"
     @auth-success="handleAuthSuccess"
@@ -83,33 +91,73 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import AuthModal from "@/components/auth/AuthModal.vue";
+import { useAuthStore } from "@/stores/auth";
 
 const router = useRouter();
+const auth = useAuthStore();
 
-const isLoggedIn = ref(false);
 const showAuthModal = ref(false);
+
+const isLoggedIn = computed(() => auth.isAuthed);
+const isAdmin = computed(() => auth.isAdmin);
+
+const leftNavItems = computed(() => {
+  // Admin links
+  if (isAdmin.value) {
+    return [
+      { to: "/admin", label: "Dashboard" },
+      { to: "/admin/orders", label: "Orders" },
+      { to: "/admin/products", label: "Products" },
+      { to: "/admin/users", label: "Users" },
+    ];
+  }
+
+  // Regular user links (logged in)
+  if (isLoggedIn.value) {
+    return [
+      { to: "/myorders", label: "My Orders" },
+      { to: "/myreviews", label: "My Reviews" },
+      { to: "/allergies", label: "Allergies" },
+      { to: "/about", label: "About" },
+      { to: "/contact", label: "Contact" },
+    ];
+  }
+
+  // Logged out links
+  return [
+    { to: "/allergies", label: "Allergies" },
+    { to: "/about", label: "About" },
+    { to: "/contact", label: "Contact" },
+  ];
+});
 
 const handleProfileClick = () => {
   if (isLoggedIn.value) {
-    router.push("/profile");
+    router.push(isAdmin.value ? "/admin" : "/profile");
   } else {
     showAuthModal.value = true;
   }
 };
 
-const handleAuthSuccess = (payload) => {
-  // payload = { mode: 'login'|'register', email: string }
-  isLoggedIn.value = true;
-  // After successful login/registration, go to profile
-  router.push("/profile");
+const handleLogout = () => {
+  auth.logout();
+  router.push("/");
+};
+
+const handleAuthSuccess = () => {
+  router.push(auth.isAdmin ? "/admin" : "/profile");
 };
 </script>
 
 <style scoped>
-.taiyaki-navbar {
+.taiyaki-navbar--default {
   background-color: var(--taiyaki-primary);
+}
+
+.taiyaki-navbar--admin {
+  background-color: #0d6efd;
 }
 </style>

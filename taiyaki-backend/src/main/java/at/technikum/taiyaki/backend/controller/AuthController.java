@@ -2,7 +2,6 @@ package at.technikum.taiyaki.backend.controller;
 
 import at.technikum.taiyaki.backend.dto.auth.AuthRequestDto;
 import at.technikum.taiyaki.backend.dto.auth.RegisterDto;
-import at.technikum.taiyaki.backend.dto.auth.TokenResponseDto;
 import at.technikum.taiyaki.backend.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
+@CrossOrigin("*")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -41,7 +40,7 @@ public class AuthController {
 
         return ResponseEntity.ok(Map.of(
                 "status", "success",
-                "token", authService.authenticate(authRequestDto)
+                "token", authService.authenticate(authRequestDto).getToken()
         ));
     }
 }
