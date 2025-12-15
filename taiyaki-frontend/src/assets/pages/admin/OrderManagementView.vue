@@ -102,10 +102,6 @@
             </tbody>
           </table>
         </div>
-
-        <p class="small text-muted mt-3 mb-0">
-          This is a demo admin view. Connect it to your backend or store to load and update real orders.
-        </p>
       </div>
     </div>
   </div>

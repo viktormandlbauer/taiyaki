@@ -113,11 +113,6 @@
             </tbody>
           </table>
         </div>
-
-        <p class="small text-muted mt-3 mb-0">
-          This is a demo admin view. Connect to your real product API or store
-          to manage actual data.
-        </p>
       </div>
     </div>
   </div>
@@ -128,7 +123,7 @@ import { computed, ref } from "vue";
 
 const search = ref("");
 
-// Demo products – replace with real data later
+// Demo products data
 const products = ref([
   {
     id: 1,
