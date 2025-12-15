@@ -1,6 +1,9 @@
 <!-- src/components/Navbar.vue -->
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark taiyaki-navbar mb-4">
+  <nav
+    class="navbar navbar-expand-lg navbar-dark taiyaki-navbar mb-4"
+    :class="isAdmin ? 'taiyaki-navbar--admin' : 'taiyaki-navbar--default'"
+  >
     <div class="container">
       <RouterLink class="navbar-brand" to="/">Taiyaki</RouterLink>
 
@@ -20,14 +23,8 @@
       <div class="collapse navbar-collapse show" id="mainNavbar">
         <!-- Left: nav links -->
         <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/allergies">Allergies</RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/about">About</RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/contact">Contact</RouterLink>
+          <li v-for="item in leftNavItems" :key="item.to" class="nav-item">
+            <RouterLink class="nav-link" :to="item.to">{{ item.label }}</RouterLink>
           </li>
         </ul>
 
@@ -46,7 +43,6 @@
 
         <!-- Right: profile + cart icons -->
         <div class="d-flex align-items-center gap-3">
-          <!-- Profile icon: opens modal if not logged in -->
           <button
             type="button"
             class="btn p-0 border-0 bg-transparent nav-link"
@@ -56,7 +52,6 @@
             <i class="bi bi-person fs-4"></i>
           </button>
 
-          <!-- Cart (with badge) -->
           <RouterLink
             class="nav-link position-relative p-0"
             to="/cart"
@@ -75,7 +70,6 @@
     </div>
   </nav>
 
-  <!-- Outsourced auth modal -->
   <AuthModal
     v-model:visible="showAuthModal"
     @auth-success="handleAuthSuccess"
@@ -83,33 +77,47 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import AuthModal from "@/components/auth/AuthModal.vue";
+import { useAuthStore } from "@/stores/auth";
 
 const router = useRouter();
+const auth = useAuthStore();
 
-const isLoggedIn = ref(false);
 const showAuthModal = ref(false);
 
-const handleProfileClick = () => {
-  if (isLoggedIn.value) {
-    router.push("/profile");
-  } else {
-    showAuthModal.value = true;
+const isLoggedIn = computed(() => auth.isAuthed);
+const isAdmin = computed(() => auth.isAdmin);
+
+const leftNavItems = computed(() => {
+  if (isAdmin.value) {
+    return [
+      { to: "/admin", label: "Dashboard" },
+      { to: "/admin/orders", label: "Orders" },
+      { to: "/admin/products", label: "Products" },
+      { to: "/admin/users", label: "Users" },
+    ];
   }
+
+  return [
+    { to: "/allergies", label: "Allergies" },
+    { to: "/about", label: "About" },
+    { to: "/contact", label: "Contact" },
+  ];
+});
+
+const handleProfileClick = () => {
+  if (isLoggedIn.value) router.push(isAdmin.value ? "/admin" : "/profile");
+  else showAuthModal.value = true;
 };
 
-const handleAuthSuccess = (payload) => {
-  // payload = { mode: 'login'|'register', email: string }
-  isLoggedIn.value = true;
-  // After successful login/registration, go to profile
-  router.push("/profile");
+const handleAuthSuccess = () => {
+  router.push(auth.isAdmin ? "/admin" : "/profile");
 };
 </script>
 
 <style scoped>
-.taiyaki-navbar {
-  background-color: var(--taiyaki-primary);
-}
+.taiyaki-navbar--default { background-color: var(--taiyaki-primary); } /* rot */
+.taiyaki-navbar--admin   { background-color: #0d6efd; } /* blau */
 </style>

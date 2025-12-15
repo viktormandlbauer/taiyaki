@@ -19,7 +19,6 @@
         </div>
 
         <div class="modal-body">
-
           <AuthTabs v-model="activeTab" />
 
           <LoginForm
@@ -43,11 +42,13 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { login, register } from "@/api/auth";
+import { useAuthStore } from "@/stores/auth";
 
 import LoginForm from "@/components/auth/LoginForm.vue";
 import RegisterForm from "@/components/auth/RegisterForm.vue";
 import AuthTabs from "@/components/auth/AuthTabs.vue";
+
+const auth = useAuthStore();
 
 const props = defineProps({
   visible: { type: Boolean, default: false },
@@ -82,20 +83,14 @@ const handleLogin = async ({ identifier, password }) => {
   submitting.value = true;
 
   try {
-    const res = await login(identifier, password);
-
-    // common patterns:
-    // 1) backend returns token
-    const token = res.data?.token;
-    if (token) localStorage.setItem("token", token);
-
-    emit("auth-success", { mode: "login", user: res.data?.user, identifier });
+    const res = await auth.login(identifier, password);
+    emit("auth-success", { mode: "login", user: auth.user, identifier, res });
     close();
   } catch (err) {
-    // show backend message if present
     loginError.value =
       err.response?.data?.message ||
       err.response?.data?.error ||
+      err.message ||
       "Login failed. Please try again.";
   } finally {
     submitting.value = false;
@@ -107,13 +102,14 @@ const handleRegister = async (payload) => {
   submitting.value = true;
 
   try {
-    const res = await register(payload);
+    const res = await auth.register(payload);
     emit("auth-success", { mode: "register", user: res.data?.user, ...payload });
     close();
   } catch (err) {
     registerError.value =
       err.response?.data?.message ||
       err.response?.data?.error ||
+      err.message ||
       "Registration failed. Please try again.";
   } finally {
     submitting.value = false;
